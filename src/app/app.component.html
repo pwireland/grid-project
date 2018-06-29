@@ -8,22 +8,21 @@
   <li *ngFor="let user of users">{{ user.name }}</li>
 </ul>
 
-<div>SOME TEXT</div>
-
-<button (click)="getSelectedRows()">Get Selected Rows</button>
-<button (click)="onAddRow()">Add Row</button>
-<button (click)="onRemoveSelected()">Remove Selected</button>
-
 <ag-grid-angular 
   #agGrid
-  style="width: 60%; height: 500px;" 
+  style="width: 100%; height: 500px;" 
   class="ag-theme-balham"
   [enableSorting]="true"
   [enableFilter]="true"
   [rowData]="rowData" 
   [columnDefs]="columnDefs"
+  [defaultColDef]="defaultColDef"
   rowSelection="multiple"
   (gridReady)="onGridReady($event)"
   >
 </ag-grid-angular>
+
+<button (click)="getSelectedRows()">Get Selected Rows</button>
+<button (click)="onAddRow()">Add Row</button>
+<button (click)="onRemoveSelected()">Remove Selected</button>
 
