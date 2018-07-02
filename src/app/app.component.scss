@@ -46,7 +46,10 @@
 }
 
 .ag-header-cell-text {
+    white-space: normal !important;
     margin: 0 auto;
+    text-align: center;
+    overflow: visible;
 }
 
 .ag-theme-balham .ag-cell {

@@ -1,3 +1,7 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
 <div style="text-align:center">
   <h1>
     {{ title }}
@@ -17,6 +21,8 @@
   [rowData]="rowData" 
   [columnDefs]="columnDefs"
   [defaultColDef]="defaultColDef"
+  [enableColResize]="true"
+  [components]="components"
   rowSelection="multiple"
   (gridReady)="onGridReady($event)"
   >

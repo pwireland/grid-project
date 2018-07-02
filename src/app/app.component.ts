@@ -2,6 +2,9 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AgGridNg2 } from 'ag-grid-angular';
 import { DataService } from './data.service';
 
+// Used for Jquery datepicker
+declare var $: any;
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,6 +16,7 @@ export class AppComponent implements OnInit {
 
   private columnDefs;
   private defaultColDef;
+  private components;
   // Define a users property to hold our user data
   users: Array<any>;
 
@@ -24,10 +28,10 @@ export class AppComponent implements OnInit {
         headerClass: 'gHeader1',
         children: [
           { headerName: 'Wafer no.', field: 'wafer_n', type: 'numericColumn',
-            cellClass: 'cell-wafer-n', headerClass: 'headerMain' },
+            cellClass: 'cell-wafer-n', headerClass: 'headerMain', filter: 'agNumberColumnFilter' },
           { headerName: 'LED No.', field: 'led_n', cellClass: 'cell-led-n' },
           { headerName: 'Date', field: 'date', type: 'numericColumn',
-            headerClass: 'headerMain' }
+            headerClass: 'headerMain', cellEditor: 'datePicker' }
         ]
       },
       {
@@ -39,7 +43,7 @@ export class AppComponent implements OnInit {
           { headerName: 'Scan or enter Lot/Batch No.', field: 'lot_n', cellClass: 'cell-lot-n' },
           { headerName: 'Bin. Grade or Kit Number', field: 'bin_n', cellClass: 'cell-bin-n' },
           { headerName: 'Qty on Wafer', field: 'qty_wafer', type: 'numericColumn',
-            headerClass: 'headerMain' },
+            headerClass: 'headerMain', filter: 'agNumberColumnFilter' },
           { headerName: 'Manufacturing date', field: 'manufacturing_date', type: 'numericColumn',
             headerClass: 'headerMain' },
           { headerName: 'Test Current', field: 'test_current', type: 'numericColumn',
@@ -51,21 +55,21 @@ export class AppComponent implements OnInit {
         headerClass: 'gHeader3',
         children: [
           { headerName: 'Min', field: 'min', type: 'numericColumn',
-            headerClass: 'headerMain' },
+            headerClass: 'headerMain', filter: 'agNumberColumnFilter' },
           { headerName: 'Ave.', field: 'average', type: 'numericColumn',
-            headerClass: 'headerMain' },
+            headerClass: 'headerMain', filter: 'agNumberColumnFilter' },
           { headerName: 'Max.', field: 'max', type: 'numericColumn',
-            headerClass: 'headerMain' },
+            headerClass: 'headerMain', filter: 'agNumberColumnFilter' },
           { headerName: 'Units', field: 'units' }
         ]
       }
     ];
+    this.components = { datePicker: getDatePicker() };
 
     // Default column options
     this.defaultColDef = {
       editable: true,
-      headerClass: 'headerMain',
-      width: 96
+      headerClass: 'headerMain'
     };
 
     // Access the Data Service's getUsers() method
@@ -237,8 +241,9 @@ export class AppComponent implements OnInit {
     this.gridColumnApi = params.columnApi;
 
     // Automatically resize columns
-    this.autoSizeAll();
-    this.gridApi.setHeaderHeight(50);
+    this.gridApi.setHeaderHeight(64);
+    params.api.sizeColumnsToFit();
+    // this.autoSizeAll();
   }
 
   // Automatically resize columns
@@ -271,4 +276,28 @@ export class AppComponent implements OnInit {
     console.log(res);
   }
 
+}
+
+function getDatePicker() {
+  function Datepicker() {}
+  Datepicker.prototype.init = function(params) {
+    this.eInput = document.createElement('input');
+    this.eInput.value = params.value;
+    $(this.eInput).datepicker({ dateFormat: 'dd/mm/yy' });
+  };
+  Datepicker.prototype.getGui = function() {
+    return this.eInput;
+  };
+  Datepicker.prototype.afterGuiAttached = function() {
+    this.eInput.focus();
+    this.eInput.select();
+  };
+  Datepicker.prototype.getValue = function() {
+    return this.eInput.value;
+  };
+  Datepicker.prototype.destroy = function() {};
+  Datepicker.prototype.isPopup = function() {
+    return false;
+  };
+  return Datepicker;
 }
