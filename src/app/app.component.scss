@@ -1,5 +1,6 @@
 .cell-wafer-n {
-    background-color: rgba(255,0,0,0.7);
+    background: rgba(255, 0 ,0, 0.7);
+    text-align: center;
 }
 
 .cell-led-n {
@@ -16,4 +17,42 @@
 
 .cell-bin-n {
     background: rgba(242, 220, 219, 0.7);
+}
+
+.headerMain {
+    background: rgba(141, 180, 226, 0.7);
+    color: white;
+    font-weight: bold;
+    border: 1px solid #303030;
+}
+
+.gHeader1 {
+    background: rgba(235, 241, 222, 0.7);
+}
+
+.gHeader2 {
+    background: rgba(218, 238, 243, 0.7);
+}
+
+.gHeader3 {
+    background: rgba(253, 233, 217, 0.7);
+}
+
+// Center text inside header
+.ag-header-group-text {
+    margin: 0 auto;
+    font-weight: bold;
+    font-size: 120%;
+}
+
+.ag-header-cell-text {
+    margin: 0 auto;
+}
+
+.ag-theme-balham .ag-cell {
+    border: 1px solid #303030;
+}
+
+.ag-theme-balham .ag-root {
+    border: 2px solid #303030;
 }

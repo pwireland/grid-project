@@ -19,25 +19,52 @@ export class AppComponent implements OnInit {
   // Create an instance of the DataService through dependency injection
   constructor(private _dataService: DataService) {
     this.columnDefs = [
-      { headerName: 'Wafer no.', field: 'wafer_n', type: 'numericColumn', cellClass: 'cell-wafer-n' },
-      { headerName: 'LED No.', field: 'led_n', cellClass: 'cell-led-n' },
-      { headerName: 'Date', field: 'date', type: 'numericColumn' },
-      { headerName: 'Supplier', field: 'supplier', cellClass: 'cell-supplier' },
-      { headerName: 'Supplier PIN or Type', field: 'supplier_pin' },
-      { headerName: 'Scan or enter Lot/Batch No.', field: 'lot_n', cellClass: 'cell-lot-n' },
-      { headerName: 'Bin. Grade or Kit Number', field: 'bin_n', cellClass: 'cell-bin-n' },
-      { headerName: 'Qty on Wafer', field: 'qty_wafer', type: 'numericColumn' },
-      { headerName: 'Manufacturing date', field: 'manufacturing_date', type: 'numericColumn' },
-      { headerName: 'Test Current', field: 'test_current', type: 'numericColumn' },
-      { headerName: 'Min', field: 'min', type: 'numericColumn' },
-      { headerName: 'Ave.', field: 'average', type: 'numericColumn' },
-      { headerName: 'Max.', field: 'max', type: 'numericColumn' },
-      { headerName: 'Units', field: 'units' }
+      {
+        headerName: 'PROPHOTONIX DATA',
+        headerClass: 'gHeader1',
+        children: [
+          { headerName: 'Wafer no.', field: 'wafer_n', type: 'numericColumn',
+            cellClass: 'cell-wafer-n', headerClass: 'headerMain' },
+          { headerName: 'LED No.', field: 'led_n', cellClass: 'cell-led-n' },
+          { headerName: 'Date', field: 'date', type: 'numericColumn',
+            headerClass: 'headerMain' }
+        ]
+      },
+      {
+        headerName: 'SUPPLIER DATA',
+        headerClass: 'gHeader2',
+        children: [
+          { headerName: 'Supplier', field: 'supplier', cellClass: 'cell-supplier' },
+          { headerName: 'Supplier PIN or Type', field: 'supplier_pin' },
+          { headerName: 'Scan or enter Lot/Batch No.', field: 'lot_n', cellClass: 'cell-lot-n' },
+          { headerName: 'Bin. Grade or Kit Number', field: 'bin_n', cellClass: 'cell-bin-n' },
+          { headerName: 'Qty on Wafer', field: 'qty_wafer', type: 'numericColumn',
+            headerClass: 'headerMain' },
+          { headerName: 'Manufacturing date', field: 'manufacturing_date', type: 'numericColumn',
+            headerClass: 'headerMain' },
+          { headerName: 'Test Current', field: 'test_current', type: 'numericColumn',
+            headerClass: 'headerMain' }
+        ]
+      },
+      {
+        headerName: 'FORWARD VOLTAGE (VF/VF2)',
+        headerClass: 'gHeader3',
+        children: [
+          { headerName: 'Min', field: 'min', type: 'numericColumn',
+            headerClass: 'headerMain' },
+          { headerName: 'Ave.', field: 'average', type: 'numericColumn',
+            headerClass: 'headerMain' },
+          { headerName: 'Max.', field: 'max', type: 'numericColumn',
+            headerClass: 'headerMain' },
+          { headerName: 'Units', field: 'units' }
+        ]
+      }
     ];
 
     // Default column options
     this.defaultColDef = {
       editable: true,
+      headerClass: 'headerMain',
       width: 96
     };
 
@@ -49,7 +76,7 @@ export class AppComponent implements OnInit {
   private gridApi;
   private gridColumnApi;
 
-  title = 'Equipment DB app';
+  title = 'Grid Project app';
 
   private rowData: any[];
 
@@ -80,6 +107,84 @@ export class AppComponent implements OnInit {
         lot_n: '22KY800902', bin_n: 'H15', qty_wafer: 876, manufacturing_date: '', test_current: '',
         min: 2.00, average: 2.14, max: 2.40, units: ''
       },
+      // 4441 //
+      {
+        wafer_n: 4441, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+        lot_n: '22L0400909', bin_n: 'H15', qty_wafer: 920, manufacturing_date: '', test_current: '',
+        min: 2.00, average: 2.14, max: 2.40, units: ''
+      },
+      {
+        wafer_n: 4442, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+        lot_n: '227L0400911', bin_n: 'H15', qty_wafer: 977, manufacturing_date: '', test_current: '',
+        min: 2.00, average: 2.15, max: 2.40, units: ''
+      },
+      {
+        wafer_n: 4443, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+        lot_n: '22KY800912', bin_n: 'H15', qty_wafer: 893, manufacturing_date: '', test_current: '',
+        min: 2.00, average: 2.14, max: 2.40, units: ''
+      },
+      {
+        wafer_n: 4444, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+        lot_n: '22KY800914', bin_n: 'H15', qty_wafer: 960, manufacturing_date: '', test_current: '',
+        min: 2.00, average: 2.14, max: 2.40, units: ''
+      },
+      {
+        wafer_n: 4445, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+        lot_n: '22KY800915', bin_n: 'H15', qty_wafer: 974, manufacturing_date: '', test_current: '',
+        min: 2.00, average: 2.14, max: 2.40, units: ''
+      },
+      {
+        wafer_n: 4446, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+        lot_n: '22KY800916', bin_n: 'H15', qty_wafer: 886, manufacturing_date: '', test_current: '',
+        min: 2.00, average: 2.14, max: 2.40, units: ''
+      },
+      {
+        wafer_n: 4447, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+        lot_n: '22KY800917', bin_n: 'H15', qty_wafer: 971, manufacturing_date: '', test_current: '',
+        min: 2.00, average: 2.14, max: 2.40, units: ''
+      },
+      {
+        wafer_n: 4448, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+        lot_n: '22KY800918', bin_n: 'H15', qty_wafer: 974, manufacturing_date: '', test_current: '',
+        min: 2.00, average: 2.14, max: 2.40, units: ''
+      },
+      {
+        wafer_n: 4449, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+        lot_n: '22KY800919', bin_n: 'H15', qty_wafer: 973, manufacturing_date: '', test_current: '',
+        min: 2.00, average: 2.15, max: 2.40, units: ''
+      },
+      {
+        wafer_n: 4450, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+        lot_n: '22KY800920', bin_n: 'H15', qty_wafer: 715, manufacturing_date: '', test_current: '',
+        min: 2.00, average: 2.11, max: 2.40, units: ''
+      },
+      {
+        wafer_n: 4451, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+        lot_n: '4180039000', bin_n: 'H15', qty_wafer: 124, manufacturing_date: '', test_current: '',
+        min: 2.00, average: 2.11, max: 2.40, units: ''
+      },
+      // COMMENT 4452 //
+      {
+        wafer_n: 4452, led_n: 'LED0052', date: '08/02/2018', supplier: 'MARUBENI', supplier_pin: 'C1300.30',
+        lot_n: '17F06-705A', bin_n: '', qty_wafer: 2420, manufacturing_date: '', test_current: '',
+        min: '', average: '', max: '', units: ''
+      },
+      {
+        wafer_n: 4453, led_n: 'LED0052', date: '08/02/2018', supplier: 'MARUBENI', supplier_pin: 'C1300.30',
+        lot_n: '17J25-706E', bin_n: '', qty_wafer: 2593, manufacturing_date: '', test_current: '',
+        min: '', average: '', max: '', units: ''
+      },
+      {
+        wafer_n: 4454, led_n: 'LED0052', date: '08/02/2018', supplier: 'MARUBENI', supplier_pin: 'C1300.30',
+        lot_n: '17F06-705A', bin_n: '', qty_wafer: 4162, manufacturing_date: '', test_current: '',
+        min: '', average: '', max: '', units: ''
+      },
+      {
+        wafer_n: 4455, led_n: 'LED0052', date: '08/02/2018', supplier: 'MARUBENI', supplier_pin: 'C1300.30',
+        lot_n: '17F06-705A', bin_n: '', qty_wafer: 2389, manufacturing_date: '', test_current: '',
+        min: '', average: '', max: '', units: ''
+      },
+      // 4456 //
       {
         wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
         manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
@@ -123,39 +228,7 @@ export class AppComponent implements OnInit {
       {
         wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
         manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
-      },
-      {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
-      },
-      {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
-      },
-      {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
-      },
-      {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
-      },
-      {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
-      },
-      {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
-      },
-      {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
-      },
-      {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
-      },
+      }
     ];
   }
 
