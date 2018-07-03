@@ -5,6 +5,8 @@ import { AppComponent } from './app.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { HttpClientModule } from '@angular/common/http';
 
+import 'ag-grid-enterprise';
+
 // Import the Http Module and our Data Service
 import { HttpModule } from '@angular/http';
 import { DataService } from './data.service';

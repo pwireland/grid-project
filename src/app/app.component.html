@@ -1,7 +1,4 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
 <div style="text-align:center">
   <h1>
     {{ title }}
@@ -22,13 +19,14 @@
   [columnDefs]="columnDefs"
   [defaultColDef]="defaultColDef"
   [enableColResize]="true"
+  [toolPanelSuppressSideButtons] = "true"
   [components]="components"
   rowSelection="multiple"
   (gridReady)="onGridReady($event)"
   >
 </ag-grid-angular>
 
-<button (click)="getSelectedRows()">Get Selected Rows</button>
-<button (click)="onAddRow()">Add Row</button>
-<button (click)="onRemoveSelected()">Remove Selected</button>
+<!--<button class="button" (click)="getSelectedRows()">Get Selected Rows</button>-->
+<button class="button button-blue" (click)="onAddRow()">Add row</button>
+<button class="button button-red" (click)="onRemoveSelected()">Remove Selected</button>
 

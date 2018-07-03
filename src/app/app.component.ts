@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AgGridNg2 } from 'ag-grid-angular';
 import { DataService } from './data.service';
+import { ValueParserParams } from 'ag-grid/dist/lib/entities/colDef';
 
 // Used for Jquery datepicker
 declare var $: any;
@@ -14,13 +15,19 @@ declare var $: any;
 export class AppComponent implements OnInit {
   @ViewChild('agGrid') agGrid: AgGridNg2;
 
+  title = 'Grid Project app';
+
   private columnDefs;
   private defaultColDef;
   private components;
+  private gridApi;
+  private gridColumnApi;
+  private rowData: any[];
+
   // Define a users property to hold our user data
   users: Array<any>;
 
-  // Create an instance of the DataService through dependency injection
+  // Define column headers and parameters
   constructor(private _dataService: DataService) {
     this.columnDefs = [
       {
@@ -38,14 +45,24 @@ export class AppComponent implements OnInit {
         headerName: 'SUPPLIER DATA',
         headerClass: 'gHeader2',
         children: [
-          { headerName: 'Supplier', field: 'supplier', cellClass: 'cell-supplier' },
+          { headerName: 'Supplier', field: 'supplier', cellClass: 'cell-supplier',
+          cellEditor: 'agRichSelectCellEditor',
+          cellEditorParams: {
+              values: [
+                  'EPIGAP',
+                  'EPISTAR',
+                  'MARUBENI'
+              ]
+            }
+          },
           { headerName: 'Supplier PIN or Type', field: 'supplier_pin' },
           { headerName: 'Scan or enter Lot/Batch No.', field: 'lot_n', cellClass: 'cell-lot-n' },
           { headerName: 'Bin. Grade or Kit Number', field: 'bin_n', cellClass: 'cell-bin-n' },
           { headerName: 'Qty on Wafer', field: 'qty_wafer', type: 'numericColumn',
-            headerClass: 'headerMain', filter: 'agNumberColumnFilter' },
+            headerClass: 'headerMain', filter: 'agNumberColumnFilter',
+            valueSetter: this.waferValidator },
           { headerName: 'Manufacturing date', field: 'manufacturing_date', type: 'numericColumn',
-            headerClass: 'headerMain' },
+            headerClass: 'headerMain', cellEditor: 'datePicker' },
           { headerName: 'Test Current', field: 'test_current', type: 'numericColumn',
             headerClass: 'headerMain' }
         ]
@@ -69,6 +86,8 @@ export class AppComponent implements OnInit {
     // Default column options
     this.defaultColDef = {
       editable: true,
+      filter: 'agTextColumnFilter',
+      menuTabs: ['filterMenuTab'],
       headerClass: 'headerMain'
     };
 
@@ -76,13 +95,6 @@ export class AppComponent implements OnInit {
     this._dataService.getUsers()
       .subscribe(res => this.users = res);
   }
-
-  private gridApi;
-  private gridColumnApi;
-
-  title = 'Grid Project app';
-
-  private rowData: any[];
 
   ngOnInit() {
     this.rowData = [
@@ -190,48 +202,48 @@ export class AppComponent implements OnInit {
       },
       // 4456 //
       {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
+        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       },
       {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
+        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       },
       {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
+        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       },
       {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
+        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       },
       {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
+        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       },
       {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
+        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       },
       {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
+        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       },
       {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
+        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       },
       {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
+        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       },
       {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
+        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       },
       {
-        wafer_n: 0, led_n: '', date: 0, supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
+        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       }
     ];
   }
@@ -241,7 +253,7 @@ export class AppComponent implements OnInit {
     this.gridColumnApi = params.columnApi;
 
     // Automatically resize columns
-    this.gridApi.setHeaderHeight(64);
+    this.gridApi.setHeaderHeight(65);
     params.api.sizeColumnsToFit();
     // this.autoSizeAll();
   }
@@ -262,28 +274,46 @@ export class AppComponent implements OnInit {
     alert(`Selected nodes: ${selectedDataStringPresentation}`);
   }
 
+  // Add an empty row
   onAddRow() {
     const newItem = {
       wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-      manufacturing_date: '', test_current: '', min: 0, average: 0, max: 0, units: ''
+      manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
     };
     const res = this.gridApi.updateRowData({ add: [newItem] });
   }
 
+  // Remove selected rows
   onRemoveSelected() {
     const selectedData = this.gridApi.getSelectedRows();
     const res = this.gridApi.updateRowData({ remove: selectedData });
     console.log(res);
   }
 
+  // The value setter function/method acts as a validator
+  private waferValidator(params: ValueParserParams) {
+    // Value is legit - set it and signal the value has been changed/set
+    if (params.newValue <= 10000) {
+        params.data[params.colDef.field] = params.newValue;
+        return true;
+    }
+    // Illegal value - signal no change
+    alert('The value cannot be greater than 10,000');
+    return false;
+  }
+
 }
 
+/*
+* Initialize JQuery-ui datepicker
+*/
 function getDatePicker() {
   function Datepicker() {}
   Datepicker.prototype.init = function(params) {
     this.eInput = document.createElement('input');
     this.eInput.value = params.value;
-    $(this.eInput).datepicker({ dateFormat: 'dd/mm/yy' });
+    // Datepicker initialization: maxDate = today (0)
+    $(this.eInput).datepicker({ dateFormat: 'dd/mm/yy', maxDate: 0 });
   };
   Datepicker.prototype.getGui = function() {
     return this.eInput;
