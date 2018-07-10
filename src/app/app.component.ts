@@ -24,13 +24,13 @@ export class AppComponent implements OnInit {
   private gridColumnApi;
   private cacheBlockSize;
   private maxBlocksInCache;
-  private rowData: any[];
 
-  // Define a users property to hold our user data
-  private leds: Array<any>;
-  private unsavedRow: Array<any> = [];
+  private rowData: any[];               // ag-grid - Stores grid data to be displayed
+  private leds: Array<any>;             // Stores leds data fetched from the database
 
-  // Define column headers and parameters
+  private unsavedRow: Array<any> = [];  // Stores ids (wafer_n) of rows that need to be saved in the database
+
+  // Defines column headers and parameters
   constructor(private _dataService: DataService) {
     this.columnDefs = [
       {
@@ -96,174 +96,19 @@ export class AppComponent implements OnInit {
       menuTabs: ['filterMenuTab'],
       headerClass: 'headerMain'
     };
-
-    // Access the Data Service's getLeds() method to fill the grid
-    this._dataService.getLeds().subscribe(res => {
-      this.leds = res;
-      console.log(this.leds);
-    });
   }
 
-  ngOnInit() {
-    this.rowData = [
-      {
-        wafer_n: 4436, led_n: 'LED0020', date: '07/02/2018', supplier: 'EPIGAP', supplier_pin: 'ELOC-870-11',
-        lot_n: '2626H/003/6', bin_n: '', qty_wafer: 1412, manufacturing_date: '01/01/1970', test_current: '20mA',
-        min: 1.31, average: 1.33, max: 1.33, units: 'V'
-      },
-      {
-        wafer_n: 4437, led_n: 'LED0020', date: '07/02/2018', supplier: 'EPIGAP', supplier_pin: 'ELOC-870-11',
-        lot_n: '2626H/0037a', bin_n: '', qty_wafer: 210, manufacturing_date: '01/01/1970', test_current: '20mA',
-        min: 1.33, average: 1.33, max: 1.34, units: 'V'
-      },
-      {
-        wafer_n: 4438, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
-        lot_n: '22KY800900', bin_n: 'H15', qty_wafer: 927, manufacturing_date: '', test_current: '',
-        min: 2.00, average: 2.14, max: 2.40, units: ''
-      },
-      {
-        wafer_n: 4439, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
-        lot_n: '227KY800901', bin_n: 'H15', qty_wafer: 937, manufacturing_date: '', test_current: '',
-        min: 2.00, average: 2.13, max: 2.40, units: ''
-      },
-      {
-        wafer_n: 4440, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
-        lot_n: '22KY800902', bin_n: 'H15', qty_wafer: 876, manufacturing_date: '', test_current: '',
-        min: 2.00, average: 2.14, max: 2.40, units: ''
-      },
-      // 4441 //
-      {
-        wafer_n: 4441, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
-        lot_n: '22L0400909', bin_n: 'H15', qty_wafer: 920, manufacturing_date: '', test_current: '',
-        min: 2.00, average: 2.14, max: 2.40, units: ''
-      },
-      {
-        wafer_n: 4442, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
-        lot_n: '227L0400911', bin_n: 'H15', qty_wafer: 977, manufacturing_date: '', test_current: '',
-        min: 2.00, average: 2.15, max: 2.40, units: ''
-      },
-      {
-        wafer_n: 4443, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
-        lot_n: '22KY800912', bin_n: 'H15', qty_wafer: 893, manufacturing_date: '', test_current: '',
-        min: 2.00, average: 2.14, max: 2.40, units: ''
-      },
-      {
-        wafer_n: 4444, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
-        lot_n: '22KY800914', bin_n: 'H15', qty_wafer: 960, manufacturing_date: '', test_current: '',
-        min: 2.00, average: 2.14, max: 2.40, units: ''
-      },
-      {
-        wafer_n: 4445, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
-        lot_n: '22KY800915', bin_n: 'H15', qty_wafer: 974, manufacturing_date: '', test_current: '',
-        min: 2.00, average: 2.14, max: 2.40, units: ''
-      },
-      {
-        wafer_n: 4446, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
-        lot_n: '22KY800916', bin_n: 'H15', qty_wafer: 886, manufacturing_date: '', test_current: '',
-        min: 2.00, average: 2.14, max: 2.40, units: ''
-      },
-      {
-        wafer_n: 4447, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
-        lot_n: '22KY800917', bin_n: 'H15', qty_wafer: 971, manufacturing_date: '', test_current: '',
-        min: 2.00, average: 2.14, max: 2.40, units: ''
-      },
-      {
-        wafer_n: 4448, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
-        lot_n: '22KY800918', bin_n: 'H15', qty_wafer: 974, manufacturing_date: '', test_current: '',
-        min: 2.00, average: 2.14, max: 2.40, units: ''
-      },
-      {
-        wafer_n: 4449, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
-        lot_n: '22KY800919', bin_n: 'H15', qty_wafer: 973, manufacturing_date: '', test_current: '',
-        min: 2.00, average: 2.15, max: 2.40, units: ''
-      },
-      {
-        wafer_n: 4450, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
-        lot_n: '22KY800920', bin_n: 'H15', qty_wafer: 715, manufacturing_date: '', test_current: '',
-        min: 2.00, average: 2.11, max: 2.40, units: ''
-      },
-      {
-        wafer_n: 4451, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
-        lot_n: '4180039000', bin_n: 'H15', qty_wafer: 124, manufacturing_date: '', test_current: '',
-        min: 2.00, average: 2.11, max: 2.40, units: ''
-      },
-      // COMMENT 4452 //
-      {
-        wafer_n: 4452, led_n: 'LED0052', date: '08/02/2018', supplier: 'MARUBENI', supplier_pin: 'C1300.30',
-        lot_n: '17F06-705A', bin_n: '', qty_wafer: 2420, manufacturing_date: '', test_current: '',
-        min: '', average: '', max: '', units: ''
-      },
-      {
-        wafer_n: 4453, led_n: 'LED0052', date: '08/02/2018', supplier: 'MARUBENI', supplier_pin: 'C1300.30',
-        lot_n: '17J25-706E', bin_n: '', qty_wafer: 2593, manufacturing_date: '', test_current: '',
-        min: '', average: '', max: '', units: ''
-      },
-      {
-        wafer_n: 4454, led_n: 'LED0052', date: '08/02/2018', supplier: 'MARUBENI', supplier_pin: 'C1300.30',
-        lot_n: '17F06-705A', bin_n: '', qty_wafer: 4162, manufacturing_date: '', test_current: '',
-        min: '', average: '', max: '', units: ''
-      },
-      {
-        wafer_n: 4455, led_n: 'LED0052', date: '08/02/2018', supplier: 'MARUBENI', supplier_pin: 'C1300.30',
-        lot_n: '17F06-705A', bin_n: '', qty_wafer: 2389, manufacturing_date: '', test_current: '',
-        min: '', average: '', max: '', units: ''
-      },
-      // 4456 //
-      {
-        wafer_n: 4456, led_n: 'LED0153', date: '08/02/2018', supplier: 'SEOUL VIOSYS', supplier_pin: 'UV1000-39L26',
-        lot_n: '17M31V0206', bin_n: '', qty_wafer: 1000, manufacturing_date: '', test_current: '',
-        min: 3.40, average: 3.47, max: 3.50, units: ''
-      },
-      {
-        wafer_n: 4457, led_n: 'LED0153', date: '08/02/2018', supplier: 'SEOUL VIOSYS', supplier_pin: 'UV1000-39L26',
-        lot_n: '17M31V0318', bin_n: '', qty_wafer: 1000, manufacturing_date: '', test_current: '',
-        min: 3.40, average: 3.49, max: 3.50, units: ''
-      },
-      {
-        wafer_n: 4458, led_n: 'LED012', date: '12/02/2018', supplier: 'EPIGAP', supplier_pin: 'EOLC-740-27-2',
-        lot_n: '27144/174/6', bin_n: '', qty_wafer: 4838, manufacturing_date: '', test_current: '20mA',
-        min: '1.62', average: '1.65', max: '1.68', units: ''
-      },
-      {
-        wafer_n: 4459, led_n: 'LED012', date: '12/02/2018', supplier: 'EPIGAP', supplier_pin: 'EOLC-740-27-2',
-        lot_n: '27144/174/7', bin_n: '', qty_wafer: 5275, manufacturing_date: '', test_current: '20mA',
-        min: '1.60', average: '1.64', max: '1.68', units: ''
-      },
-      {
-        wafer_n: 4460, led_n: 'LED012', date: '12/02/2018', supplier: 'EPIGAP', supplier_pin: 'EOLC-740-27-2',
-        lot_n: '27144/174/9', bin_n: '', qty_wafer: 4574, manufacturing_date: '', test_current: '20mA',
-        min: '1.60', average: '1.62', max: '1.65', units: ''
-      },
-      {
-        wafer_n: 4461, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
-      },
-      {
-        wafer_n: 4462, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
-      },
-      {
-        wafer_n: 4463, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
-      },
-      {
-        wafer_n: 4464, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
-      },
-      {
-        wafer_n: 4465, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
-      },
-      {
-        wafer_n: 4466, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
-      }
-    ];
-  }
+  ngOnInit() {}
 
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
+
+    // Access the Data Service's getLeds() method to fill the grid
+    this._dataService.getLeds().subscribe(data => {
+      this.rowData = data;
+      console.log(data);
+    });
 
     // Automatically resize columns
     this.gridApi.setHeaderHeight(65);
@@ -272,13 +117,13 @@ export class AppComponent implements OnInit {
   }
 
   // Automatically resize columns
-  autoSizeAll() {
-    const allColumnIds = [];
-    this.gridColumnApi.getAllColumns().forEach(function(column) {
-      allColumnIds.push(column.colId);
-    });
-    this.gridColumnApi.autoSizeColumns(allColumnIds);
-  }
+  // autoSizeAll() {
+  //   const allColumnIds = [];
+  //   this.gridColumnApi.getAllColumns().forEach(function(column) {
+  //     allColumnIds.push(column.colId);
+  //   });
+  //   this.gridColumnApi.autoSizeColumns(allColumnIds);
+  // }
 
   getSelectedRows() {
     const selectedNodes = this.agGrid.api.getSelectedNodes();
@@ -287,23 +132,27 @@ export class AppComponent implements OnInit {
     alert(`Selected nodes: ${selectedDataStringPresentation}`);
   }
 
-  // Add an empty row
+  /**
+   *  Adds a new empty row to the grid.
+   */
   onAddRow() {
     let max = 0;
-    this.gridApi.forEachNode( function (node, index) {
+    this.gridApi.forEachNode(function (node, index) {
       if (node.data.wafer_n > max) {
         max = node.data.wafer_n;
       }
     });
     const newItem = {
-      wafer_n: (max + 1), led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+      wafer_n: (max + 1), led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: '',
       manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
     };
     const res = this.gridApi.updateRowData({ add: [newItem] });
-    this.unsavedRow.push(newItem.wafer_n);
+    this.addUnsavedRow(newItem.wafer_n);
   }
 
-  // Remove selected rows
+  /**
+   *  Removes selected rows from the grid and the database.
+   */
   onRemoveSelected() {
     if (confirm('Are you sure you want to delete the selected rows? This cannot be undone.')) {
       const selectedData = this.gridApi.getSelectedRows();
@@ -318,47 +167,76 @@ export class AppComponent implements OnInit {
   private waferValidator(params: ValueParserParams) {
     // Value is legit - set it and signal the value has been changed/set
     if (params.newValue <= 10000) {
-        params.data[params.colDef.field] = params.newValue;
-        return true;
+      params.data[params.colDef.field] = params.newValue;
+      return true;
     }
     // Illegal value - signal no change
     alert('The value cannot be greater than 10,000');
     return false;
   }
 
+  /**
+   * Parses all grid's lines and return them as a JSON object
+   */
   parseAllLines() {
     const allNodes = [];
-    this.gridApi.forEachNode( function(rowNode, index) {
+    this.gridApi.forEachNode(function (rowNode, index) {
       allNodes.push(rowNode);
     });
     const allData = allNodes.map(node => node.data);
     const obj = JSON.stringify(allData);
     console.log(obj);
+    return obj;
   }
 
-  onCellValueChanged(params: any) {
-    const id = params.data.wafer_n;
-
-    if (id !== 0 && !this.unsavedRow.includes(id)) {
-      this.unsavedRow.push(params.data.wafer_n);
-      document.getElementById('saveButton').removeAttribute('disabled');
-      console.log('Pushed ' + params.data.wafer_n);
-      console.log('Currently in stock: ' + this.unsavedRow);
-    }
+  /**
+   * Triggered when a cell is edited.
+   * @param rowNode Contains the modified row's node.
+   */
+  onCellValueChanged(rowNode: any) {
+    const id = rowNode.data.wafer_n;
+    this.addUnsavedRow(id);
   }
 
+  /**
+   * Saves every unsaved row into the database, clearing unsaved changes in the process.
+   */
   saveGridData() {
     const self = this;
     this.gridApi.forEachNode( function (rowNode, index) {
       if (self.unsavedRow.includes(rowNode.data.wafer_n)) {
-        // this._dataService.saveRow(rowNode.data);
-        console.log('Would have saved ' + rowNode.data.wafer_n);
+        self._dataService.saveRow(rowNode.data);
+        // console.log('Would have saved ' + rowNode.data.wafer_n);
       }
     });
-    this.unsavedRow.length = 0; // clearing the buffer
+    this.clearUnsavedRows();
+  }
+
+  /**
+   * Add a row id to the unsaved rows' list.
+   * @param rowId The id to add.
+   */
+  addUnsavedRow(rowId: Number) {
+    if (rowId !== 0 && !this.unsavedRow.includes(rowId)) {
+      this.unsavedRow.push(rowId);
+      document.getElementById('saveButton').removeAttribute('disabled');
+      /* DEBUG */
+      console.log('Pushed ' + rowId);
+      console.log('Currently in stock: ' + this.unsavedRow);
+    }
+  }
+
+  /**
+   * Clear the list of unsaved changes and reset the "Save" button.
+   */
+  clearUnsavedRows() {
+    this.unsavedRow.length = 0;
     document.getElementById('saveButton').setAttribute('disabled', 'disabled');
   }
 
+  /**
+   * DEBUG - Completely clears the database (use with caution).
+   */
   clearDatabase() {
     if (confirm('Are you sure you want to completely CLEAR the database? This cannot be undone.')) {
       this._dataService.deleteAllLeds();
@@ -366,7 +244,7 @@ export class AppComponent implements OnInit {
   }
 }
 
-/*
+/**
 * Initialize JQuery-ui datepicker
 */
 function getDatePicker() {
