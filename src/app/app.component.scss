@@ -95,6 +95,7 @@
     border: 1px solid transparent;
 
     color: white;
+    background-color: #4CAF50;
     font-size: 16px;
     margin: 4px 2px;
     -webkit-transition-duration: 0.4s; /* Safari */
@@ -102,7 +103,7 @@
 }
 
 .button:hover {
-    background-color: #4CAF50;
+    background-color: rgb(63, 145, 66);
     color: white;
 }
 

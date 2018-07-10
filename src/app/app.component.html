@@ -6,7 +6,7 @@
 </div>
 
 <ul>
-  <li *ngFor="let user of users">{{ user.name }}</li>
+  <li *ngFor="let led of leds">{{ led.wafer_n }}</li>
 </ul>
 
 <ag-grid-angular 
@@ -21,7 +21,10 @@
   [enableColResize]="true"
   [toolPanelSuppressSideButtons] = "true"
   [components]="components"
+  [cacheBlockSize]="cacheBlockSize"
+  [maxBlocksInCache]="maxBlocksInCache"
   rowSelection="multiple"
+  (cellValueChanged)="onCellValueChanged($event)"
   (gridReady)="onGridReady($event)"
   >
 </ag-grid-angular>
@@ -29,4 +32,5 @@
 <!--<button class="button" (click)="getSelectedRows()">Get Selected Rows</button>-->
 <button class="button button-blue" (click)="onAddRow()">Add row</button>
 <button class="button button-red" (click)="onRemoveSelected()">Remove Selected</button>
-
+<button class="button" (click)="parseAllLines()">Print console</button>
+<button class="button button-red" (click)='clearDatabase()'>Clear Database (DANGER)</button>

@@ -22,10 +22,12 @@ export class AppComponent implements OnInit {
   private components;
   private gridApi;
   private gridColumnApi;
+  private cacheBlockSize;
+  private maxBlocksInCache;
   private rowData: any[];
 
   // Define a users property to hold our user data
-  users: Array<any>;
+  leds: Array<any>;
 
   // Define column headers and parameters
   constructor(private _dataService: DataService) {
@@ -83,6 +85,9 @@ export class AppComponent implements OnInit {
     ];
     this.components = { datePicker: getDatePicker() };
 
+    this.cacheBlockSize = 100;
+    this.maxBlocksInCache = 2;
+
     // Default column options
     this.defaultColDef = {
       editable: true,
@@ -92,20 +97,22 @@ export class AppComponent implements OnInit {
     };
 
     // Access the Data Service's getUsers() method
-    this._dataService.getUsers()
-      .subscribe(res => this.users = res);
+    this._dataService.getLeds().subscribe(res => {
+      this.leds = res;
+      console.log(this.leds);
+    });
   }
 
   ngOnInit() {
     this.rowData = [
       {
         wafer_n: 4436, led_n: 'LED0020', date: '07/02/2018', supplier: 'EPIGAP', supplier_pin: 'ELOC-870-11',
-        lot_n: '2626H/003/6', bin_n: '', qty_wafer: 1412, manufacturing_date: '######', test_current: '20mA',
+        lot_n: '2626H/003/6', bin_n: '', qty_wafer: 1412, manufacturing_date: '01/01/1970', test_current: '20mA',
         min: 1.31, average: 1.33, max: 1.33, units: 'V'
       },
       {
         wafer_n: 4437, led_n: 'LED0020', date: '07/02/2018', supplier: 'EPIGAP', supplier_pin: 'ELOC-870-11',
-        lot_n: '2626H/0037a', bin_n: '', qty_wafer: 210, manufacturing_date: '######', test_current: '20mA',
+        lot_n: '2626H/0037a', bin_n: '', qty_wafer: 210, manufacturing_date: '01/01/1970', test_current: '20mA',
         min: 1.33, average: 1.33, max: 1.34, units: 'V'
       },
       {
@@ -202,47 +209,52 @@ export class AppComponent implements OnInit {
       },
       // 4456 //
       {
-        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        wafer_n: 4456, led_n: 'LED0153', date: '08/02/2018', supplier: 'SEOUL VIOSYS', supplier_pin: 'UV1000-39L26',
+        lot_n: '17M31V0206', bin_n: '', qty_wafer: 1000, manufacturing_date: '', test_current: '',
+        min: 3.40, average: 3.47, max: 3.50, units: ''
+      },
+      {
+        wafer_n: 4457, led_n: 'LED0153', date: '08/02/2018', supplier: 'SEOUL VIOSYS', supplier_pin: 'UV1000-39L26',
+        lot_n: '17M31V0318', bin_n: '', qty_wafer: 1000, manufacturing_date: '', test_current: '',
+        min: 3.40, average: 3.49, max: 3.50, units: ''
+      },
+      {
+        wafer_n: 4458, led_n: 'LED012', date: '12/02/2018', supplier: 'EPIGAP', supplier_pin: 'EOLC-740-27-2',
+        lot_n: '27144/174/6', bin_n: '', qty_wafer: 4838, manufacturing_date: '', test_current: '20mA',
+        min: '1.62', average: '1.65', max: '1.68', units: ''
+      },
+      {
+        wafer_n: 4459, led_n: 'LED012', date: '12/02/2018', supplier: 'EPIGAP', supplier_pin: 'EOLC-740-27-2',
+        lot_n: '27144/174/7', bin_n: '', qty_wafer: 5275, manufacturing_date: '', test_current: '20mA',
+        min: '1.60', average: '1.64', max: '1.68', units: ''
+      },
+      {
+        wafer_n: 4460, led_n: 'LED012', date: '12/02/2018', supplier: 'EPIGAP', supplier_pin: 'EOLC-740-27-2',
+        lot_n: '27144/174/9', bin_n: '', qty_wafer: 4574, manufacturing_date: '', test_current: '20mA',
+        min: '1.60', average: '1.62', max: '1.65', units: ''
+      },
+      {
+        wafer_n: 4461, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
         manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       },
       {
-        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        wafer_n: 4462, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
         manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       },
       {
-        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        wafer_n: 4463, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
         manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       },
       {
-        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        wafer_n: 4464, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
         manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       },
       {
-        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        wafer_n: 4465, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
         manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       },
       {
-        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
-      },
-      {
-        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
-      },
-      {
-        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
-      },
-      {
-        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
-      },
-      {
-        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
-        manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
-      },
-      {
-        wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+        wafer_n: 4466, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
         manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
       }
     ];
@@ -286,8 +298,11 @@ export class AppComponent implements OnInit {
   // Remove selected rows
   onRemoveSelected() {
     const selectedData = this.gridApi.getSelectedRows();
+    for (const led of selectedData) {
+      console.log(led);
+      this._dataService.deleteLed(led);
+    }
     const res = this.gridApi.updateRowData({ remove: selectedData });
-    console.log(res);
   }
 
   // The value setter function/method acts as a validator
@@ -301,6 +316,36 @@ export class AppComponent implements OnInit {
     alert('The value cannot be greater than 10,000');
     return false;
   }
+
+  private parseAllLines() {
+    const allNodes = [];
+    this.gridApi.forEachNode( function(rowNode, index) {
+      allNodes.push(rowNode);
+    });
+    const allData = allNodes.map(node => node.data);
+    const obj = JSON.stringify(allData);
+    console.log(obj);
+  }
+
+  onCellValueChanged(params: any) {
+    this._dataService.saveRow(params.data);
+  }
+
+  clearDatabase() {
+    this._dataService.deleteAllLeds();
+  }
+
+    // const selectedNodes = this.agGrid.api.getSelectedNodes();
+    // const selectedData = selectedNodes.map( node => node.data );
+    // const obj = JSON.stringify(selectedData);
+    // console.log(obj);
+
+    // console.log(selectedData);
+    // const selectedDataStringPresentation = selectedData.map( node => node.wafer_n + ' ' + node.supplier).join(', ');
+    // alert(`Selected nodes: ${selectedDataStringPresentation}`);
+    // const obj = JSON.parse(this.rowData.toString());
+    // console.log(obj.count);
+    // console.log(obj.result);
 
 }
 
