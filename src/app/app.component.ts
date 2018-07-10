@@ -27,7 +27,8 @@ export class AppComponent implements OnInit {
   private rowData: any[];
 
   // Define a users property to hold our user data
-  leds: Array<any>;
+  private leds: Array<any>;
+  private unsavedRow: Array<any> = [];
 
   // Define column headers and parameters
   constructor(private _dataService: DataService) {
@@ -36,7 +37,7 @@ export class AppComponent implements OnInit {
         headerName: 'PROPHOTONIX DATA',
         headerClass: 'gHeader1',
         children: [
-          { headerName: 'Wafer no.', field: 'wafer_n', type: 'numericColumn',
+          { headerName: 'Wafer no.', field: 'wafer_n', type: 'numericColumn', sort: 'asc',
             cellClass: 'cell-wafer-n', headerClass: 'headerMain', filter: 'agNumberColumnFilter' },
           { headerName: 'LED No.', field: 'led_n', cellClass: 'cell-led-n' },
           { headerName: 'Date', field: 'date', type: 'numericColumn',
@@ -96,7 +97,7 @@ export class AppComponent implements OnInit {
       headerClass: 'headerMain'
     };
 
-    // Access the Data Service's getUsers() method
+    // Access the Data Service's getLeds() method to fill the grid
     this._dataService.getLeds().subscribe(res => {
       this.leds = res;
       console.log(this.leds);
@@ -288,21 +289,29 @@ export class AppComponent implements OnInit {
 
   // Add an empty row
   onAddRow() {
+    let max = 0;
+    this.gridApi.forEachNode( function (node, index) {
+      if (node.data.wafer_n > max) {
+        max = node.data.wafer_n;
+      }
+    });
     const newItem = {
-      wafer_n: 0, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+      wafer_n: (max + 1), led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
       manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
     };
     const res = this.gridApi.updateRowData({ add: [newItem] });
+    this.unsavedRow.push(newItem.wafer_n);
   }
 
   // Remove selected rows
   onRemoveSelected() {
-    const selectedData = this.gridApi.getSelectedRows();
-    for (const led of selectedData) {
-      console.log(led);
-      this._dataService.deleteLed(led);
+    if (confirm('Are you sure you want to delete the selected rows? This cannot be undone.')) {
+      const selectedData = this.gridApi.getSelectedRows();
+      for (const led of selectedData) {
+        this._dataService.deleteLed(led);
+      }
+      const res = this.gridApi.updateRowData({ remove: selectedData });
     }
-    const res = this.gridApi.updateRowData({ remove: selectedData });
   }
 
   // The value setter function/method acts as a validator
@@ -317,7 +326,7 @@ export class AppComponent implements OnInit {
     return false;
   }
 
-  private parseAllLines() {
+  parseAllLines() {
     const allNodes = [];
     this.gridApi.forEachNode( function(rowNode, index) {
       allNodes.push(rowNode);
@@ -328,25 +337,33 @@ export class AppComponent implements OnInit {
   }
 
   onCellValueChanged(params: any) {
-    this._dataService.saveRow(params.data);
+    const id = params.data.wafer_n;
+
+    if (id !== 0 && !this.unsavedRow.includes(id)) {
+      this.unsavedRow.push(params.data.wafer_n);
+      document.getElementById('saveButton').removeAttribute('disabled');
+      console.log('Pushed ' + params.data.wafer_n);
+      console.log('Currently in stock: ' + this.unsavedRow);
+    }
+  }
+
+  saveGridData() {
+    const self = this;
+    this.gridApi.forEachNode( function (rowNode, index) {
+      if (self.unsavedRow.includes(rowNode.data.wafer_n)) {
+        // this._dataService.saveRow(rowNode.data);
+        console.log('Would have saved ' + rowNode.data.wafer_n);
+      }
+    });
+    this.unsavedRow.length = 0; // clearing the buffer
+    document.getElementById('saveButton').setAttribute('disabled', 'disabled');
   }
 
   clearDatabase() {
-    this._dataService.deleteAllLeds();
+    if (confirm('Are you sure you want to completely CLEAR the database? This cannot be undone.')) {
+      this._dataService.deleteAllLeds();
+    }
   }
-
-    // const selectedNodes = this.agGrid.api.getSelectedNodes();
-    // const selectedData = selectedNodes.map( node => node.data );
-    // const obj = JSON.stringify(selectedData);
-    // console.log(obj);
-
-    // console.log(selectedData);
-    // const selectedDataStringPresentation = selectedData.map( node => node.wafer_n + ' ' + node.supplier).join(', ');
-    // alert(`Selected nodes: ${selectedDataStringPresentation}`);
-    // const obj = JSON.parse(this.rowData.toString());
-    // console.log(obj.count);
-    // console.log(obj.result);
-
 }
 
 /*

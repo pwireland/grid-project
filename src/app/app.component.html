@@ -33,4 +33,6 @@
 <button class="button button-blue" (click)="onAddRow()">Add row</button>
 <button class="button button-red" (click)="onRemoveSelected()">Remove Selected</button>
 <button class="button" (click)="parseAllLines()">Print console</button>
-<button class="button button-red" (click)='clearDatabase()'>Clear Database (DANGER)</button>
+<button class="button" (click)="getSelectedRows()">Get rows</button>
+<button class="button" id="saveButton" (click)="saveGridData()" disabled>SAVE changes</button>
+<button class="button button-red" (click)='clearDatabase()'>CLEAR Database (DANGER)</button>
