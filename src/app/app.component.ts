@@ -37,11 +37,24 @@ export class AppComponent implements OnInit {
         headerName: 'PROPHOTONIX DATA',
         headerClass: 'gHeader1',
         children: [
-          { headerName: 'Wafer no.', field: 'wafer_n', type: 'numericColumn', sort: 'asc',
-            cellClass: 'cell-wafer-n', headerClass: 'headerMain', filter: 'agNumberColumnFilter' },
+          { headerName: 'Wafer no.', field: 'wafer_n', cellClass: 'cell-wafer-n', headerClass: 'headerMain' },
           { headerName: 'LED No.', field: 'led_n', cellClass: 'cell-led-n' },
-          { headerName: 'Date', field: 'date', type: 'numericColumn',
-            headerClass: 'headerMain', cellEditor: 'datePicker' }
+          { headerName: 'Date', field: 'date', headerClass: 'headerMain', cellEditor: 'datePicker',
+            comparator: function(valueA, valueB, nodeA, nodeB, isInverted) {
+              const date1Number = monthToComparableNumber(valueA);
+              const date2Number = monthToComparableNumber(valueB);
+              if (date1Number === null && date2Number === null) {
+                return 0;
+              }
+              if (date1Number === null) {
+                return -1;
+              }
+              if (date2Number === null) {
+                return 1;
+              }
+              return date1Number - date2Number;
+            }
+          }
         ]
       },
       {
@@ -64,8 +77,23 @@ export class AppComponent implements OnInit {
           { headerName: 'Qty on Wafer', field: 'qty_wafer', type: 'numericColumn',
             headerClass: 'headerMain', filter: 'agNumberColumnFilter',
             valueSetter: this.waferValidator },
-          { headerName: 'Manufacturing date', field: 'manufacturing_date', type: 'numericColumn',
-            headerClass: 'headerMain', cellEditor: 'datePicker' },
+          { headerName: 'Manufacturing date', field: 'manufacturing_date',
+            headerClass: 'headerMain', cellEditor: 'datePicker',
+            comparator: function(valueA, valueB, nodeA, nodeB, isInverted) {
+              const date1Number = monthToComparableNumber(valueA);
+              const date2Number = monthToComparableNumber(valueB);
+              if (date1Number === null && date2Number === null) {
+                return 0;
+              }
+              if (date1Number === null) {
+                return -1;
+              }
+              if (date2Number === null) {
+                return 1;
+              }
+              return date1Number - date2Number;
+            }
+          },
           { headerName: 'Test Current', field: 'test_current', type: 'numericColumn',
             headerClass: 'headerMain' }
         ]
@@ -142,12 +170,37 @@ export class AppComponent implements OnInit {
         max = node.data.wafer_n;
       }
     });
+    max = Math.floor(max) + 1;
     const newItem = {
-      wafer_n: (max + 1), led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: '',
+      wafer_n: max, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: '',
       manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
     };
     const res = this.gridApi.updateRowData({ add: [newItem] });
     this.addUnsavedRow(newItem.wafer_n);
+  }
+
+  onCloneSelected() {
+    const selectedNodes = this.gridApi.getSelectedNodes();
+    for (const rowNode of selectedNodes) {
+      const rowData = Object.assign({}, rowNode.data);    // Make a copy of the row
+      // rowData.wafer_n = (1 * rowData.wafer_n + 0.1).toFixed(1);
+      rowData.wafer_n = this.incrementDecimal(rowData.wafer_n);
+      console.log('New id =' + rowData.wafer_n);
+      this.gridApi.updateRowData({ add: [rowData], addIndex: (rowNode.rowIndex + 1)});
+      this.addUnsavedRow(rowData.wafer_n);
+    }
+  }
+
+  incrementDecimal(num: Number) {
+    const numStr = (num + '').split('.');
+    let newDecimal;
+    if (numStr[1]) {
+      newDecimal = parseFloat(numStr[1]) + 1;
+    } else {
+      newDecimal = 1;
+    }
+    console.log('Longueur: ' + (newDecimal + '').length);
+    return (parseFloat(numStr[0] + '.' + newDecimal)).toFixed((newDecimal + '').length);
   }
 
   /**
@@ -163,7 +216,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  // The value setter function/method acts as a validator
+  // The value setter function acts as a validator
   private waferValidator(params: ValueParserParams) {
     // Value is legit - set it and signal the value has been changed/set
     if (params.newValue <= 10000) {
@@ -206,14 +259,13 @@ export class AppComponent implements OnInit {
     this.gridApi.forEachNode( function (rowNode, index) {
       if (self.unsavedRow.includes(rowNode.data.wafer_n)) {
         self._dataService.saveRow(rowNode.data);
-        // console.log('Would have saved ' + rowNode.data.wafer_n);
       }
     });
     this.clearUnsavedRows();
   }
 
   /**
-   * Add a row id to the unsaved rows' list.
+   * Adds a row id to the unsaved rows' list.
    * @param rowId The id to add.
    */
   addUnsavedRow(rowId: Number) {
@@ -227,7 +279,7 @@ export class AppComponent implements OnInit {
   }
 
   /**
-   * Clear the list of unsaved changes and reset the "Save" button.
+   * Clears the list of unsaved changes and reset the "Save" button.
    */
   clearUnsavedRows() {
     this.unsavedRow.length = 0;
@@ -242,6 +294,17 @@ export class AppComponent implements OnInit {
       this._dataService.deleteAllLeds();
     }
   }
+}
+
+function monthToComparableNumber(date) {
+  if (date === undefined || date === null || date.length !== 10) {
+    return null;
+  }
+  const yearNumber = date.substring(6, 10);
+  const monthNumber = date.substring(3, 5);
+  const dayNumber = date.substring(0, 2);
+  const result = yearNumber * 10000 + monthNumber * 100 + dayNumber;
+  return result;
 }
 
 /**

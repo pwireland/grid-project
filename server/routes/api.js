@@ -28,7 +28,7 @@ let response = {
 
 // Get ALL leds
 router.get('/leds', (req, res) => {
-    Led.find({}, '-_id -__v', function(err, leds) {
+    Led.find({}, '-_id -__v', {sort: {wafer_n: 'asc'}}, function(err, leds) {
         if (err) throw err;
         console.log('Leds fetched');
         res.status(200).json(leds);
