@@ -37,7 +37,31 @@ export class AppComponent implements OnInit {
         headerName: 'PROPHOTONIX DATA',
         headerClass: 'gHeader1',
         children: [
-          { headerName: 'Wafer no.', field: 'wafer_n', cellClass: 'cell-wafer-n', headerClass: 'headerMain' },
+          { headerName: 'Wafer no.', field: 'wafer_n', cellClass: 'cell-wafer-n', headerClass: 'headerMain', sort: 'asc',
+            comparator: function(valueA, valueB, nodeA, nodeB, isInverted) {
+              const idA = (valueA + '').split('.');
+              const idB = (valueB + '').split('.');
+              const intA = parseFloat(idA[0]); const intB = parseFloat(idB[0]);
+              const decA = parseFloat(idA[1]); const decB = parseFloat(idB[1]);
+              if (!intA && !intB) {
+                return 0;
+              }
+              if (!intA || (intA < intB)) {
+                return -1;
+              }
+              if (!intB || (intA > intB)) {
+                return 1;
+              }
+              if (intA === intB) {
+                if (!decB || (decA > decB)) {
+                  return 1;
+                } else {
+                  return -1;
+                }
+              }
+              return 0;
+            }
+          },
           { headerName: 'LED No.', field: 'led_n', cellClass: 'cell-led-n' },
           { headerName: 'Date', field: 'date', headerClass: 'headerMain', cellEditor: 'datePicker',
             comparator: function(valueA, valueB, nodeA, nodeB, isInverted) {
