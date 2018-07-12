@@ -39,13 +39,13 @@ export class AppComponent implements OnInit {
         children: [
           { headerName: 'Wafer no.', field: 'wafer_n', cellClass: 'cell-wafer-n', headerClass: 'headerMain', sort: 'asc',
             comparator: function(valueA, valueB, nodeA, nodeB, isInverted) {
-              const nums1 = valueA.split('.');
-              const nums2 = valueB.split('.');
+              const nums1 = (valueA + '').split('.');
+              const nums2 = (valueB + '').split('.');
 
               for (let i = 0; i < nums1.length; i++) {
                 if (nums2[i]) {
                   if (nums1[i] !== nums2[i]) {
-                    return nums1[i] - nums2[i];
+                    return parseFloat(nums1[i]) - parseFloat(nums2[i]);
                   } // else continue
                 } else {
                   return 1; // no second number in b
@@ -149,10 +149,164 @@ export class AppComponent implements OnInit {
     this.gridColumnApi = params.columnApi;
 
     // Access the Data Service's getLeds() method to fill the grid
-    this._dataService.getLeds().subscribe(data => {
-      this.rowData = data;
-      console.log(data);
-    });
+    // this._dataService.getLeds().subscribe(data => {
+    //   this.rowData = data;
+    //   console.log(data);
+    // });
+    this.rowData = [
+      {
+      wafer_n: 4436, led_n: 'LED0020', date: '07/02/2018', supplier: 'EPIGAP', supplier_pin: 'ELOC-870-11',
+      lot_n: '2626H/003/6', bin_n: '', qty_wafer: 1412, manufacturing_date: '01/01/1970', test_current: '20mA',
+      min: 1.31, average: 1.33, max: 1.33, units: 'V'
+      },
+      {
+      wafer_n: 4437, led_n: 'LED0020', date: '07/02/2018', supplier: 'EPIGAP', supplier_pin: 'ELOC-870-11',
+      lot_n: '2626H/0037a', bin_n: '', qty_wafer: 210, manufacturing_date: '01/01/1970', test_current: '20mA',
+      min: 1.33, average: 1.33, max: 1.34, units: 'V'
+      },
+      {
+      wafer_n: 4438, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+      lot_n: '22KY800900', bin_n: 'H15', qty_wafer: 927, manufacturing_date: '', test_current: '',
+      min: 2.00, average: 2.14, max: 2.40, units: ''
+      },
+      {
+      wafer_n: 4439, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+      lot_n: '227KY800901', bin_n: 'H15', qty_wafer: 937, manufacturing_date: '', test_current: '',
+      min: 2.00, average: 2.13, max: 2.40, units: ''
+      },
+      {
+      wafer_n: 4440, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+      lot_n: '22KY800902', bin_n: 'H15', qty_wafer: 876, manufacturing_date: '', test_current: '',
+      min: 2.00, average: 2.14, max: 2.40, units: ''
+      },
+      // 4441 //
+      {
+      wafer_n: 4441, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+      lot_n: '22L0400909', bin_n: 'H15', qty_wafer: 920, manufacturing_date: '', test_current: '',
+      min: 2.00, average: 2.14, max: 2.40, units: ''
+      },
+      {
+      wafer_n: 4442, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+      lot_n: '227L0400911', bin_n: 'H15', qty_wafer: 977, manufacturing_date: '', test_current: '',
+      min: 2.00, average: 2.15, max: 2.40, units: ''
+      },
+      {
+      wafer_n: 4443, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+      lot_n: '22KY800912', bin_n: 'H15', qty_wafer: 893, manufacturing_date: '', test_current: '',
+      min: 2.00, average: 2.14, max: 2.40, units: ''
+      },
+      {
+      wafer_n: 4444, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+      lot_n: '22KY800914', bin_n: 'H15', qty_wafer: 960, manufacturing_date: '', test_current: '',
+      min: 2.00, average: 2.14, max: 2.40, units: ''
+      },
+      {
+      wafer_n: 4445, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+      lot_n: '22KY800915', bin_n: 'H15', qty_wafer: 974, manufacturing_date: '', test_current: '',
+      min: 2.00, average: 2.14, max: 2.40, units: ''
+      },
+      {
+      wafer_n: 4446, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+      lot_n: '22KY800916', bin_n: 'H15', qty_wafer: 886, manufacturing_date: '', test_current: '',
+      min: 2.00, average: 2.14, max: 2.40, units: ''
+      },
+      {
+      wafer_n: 4447, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+      lot_n: '22KY800917', bin_n: 'H15', qty_wafer: 971, manufacturing_date: '', test_current: '',
+      min: 2.00, average: 2.14, max: 2.40, units: ''
+      },
+      {
+      wafer_n: 4448, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+      lot_n: '22KY800918', bin_n: 'H15', qty_wafer: 974, manufacturing_date: '', test_current: '',
+      min: 2.00, average: 2.14, max: 2.40, units: ''
+      },
+      {
+      wafer_n: 4449, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+      lot_n: '22KY800919', bin_n: 'H15', qty_wafer: 973, manufacturing_date: '', test_current: '',
+      min: 2.00, average: 2.15, max: 2.40, units: ''
+      },
+      {
+      wafer_n: 4450, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+      lot_n: '22KY800920', bin_n: 'H15', qty_wafer: 715, manufacturing_date: '', test_current: '',
+      min: 2.00, average: 2.11, max: 2.40, units: ''
+      },
+      {
+      wafer_n: 4451, led_n: 'LED0034', date: '08/02/2018', supplier: 'EPISTAR', supplier_pin: 'ES-SMHRPN42B',
+      lot_n: '4180039000', bin_n: 'H15', qty_wafer: 124, manufacturing_date: '', test_current: '',
+      min: 2.00, average: 2.11, max: 2.40, units: ''
+      },
+      // COMMENT 4452 //
+      {
+      wafer_n: 4452, led_n: 'LED0052', date: '08/02/2018', supplier: 'MARUBENI', supplier_pin: 'C1300.30',
+      lot_n: '17F06-705A', bin_n: '', qty_wafer: 2420, manufacturing_date: '', test_current: '',
+      min: '', average: '', max: '', units: ''
+      },
+      {
+      wafer_n: 4453, led_n: 'LED0052', date: '08/02/2018', supplier: 'MARUBENI', supplier_pin: 'C1300.30',
+      lot_n: '17J25-706E', bin_n: '', qty_wafer: 2593, manufacturing_date: '', test_current: '',
+      min: '', average: '', max: '', units: ''
+      },
+      {
+      wafer_n: 4454, led_n: 'LED0052', date: '08/02/2018', supplier: 'MARUBENI', supplier_pin: 'C1300.30',
+      lot_n: '17F06-705A', bin_n: '', qty_wafer: 4162, manufacturing_date: '', test_current: '',
+      min: '', average: '', max: '', units: ''
+      },
+      {
+      wafer_n: 4455, led_n: 'LED0052', date: '08/02/2018', supplier: 'MARUBENI', supplier_pin: 'C1300.30',
+      lot_n: '17F06-705A', bin_n: '', qty_wafer: 2389, manufacturing_date: '', test_current: '',
+      min: '', average: '', max: '', units: ''
+      },
+      // 4456 //
+      {
+      wafer_n: 4456, led_n: 'LED0153', date: '08/02/2018', supplier: 'SEOUL VIOSYS', supplier_pin: 'UV1000-39L26',
+      lot_n: '17M31V0206', bin_n: '', qty_wafer: 1000, manufacturing_date: '', test_current: '',
+      min: 3.40, average: 3.47, max: 3.50, units: ''
+      },
+      {
+      wafer_n: 4457, led_n: 'LED0153', date: '08/02/2018', supplier: 'SEOUL VIOSYS', supplier_pin: 'UV1000-39L26',
+      lot_n: '17M31V0318', bin_n: '', qty_wafer: 1000, manufacturing_date: '', test_current: '',
+      min: 3.40, average: 3.49, max: 3.50, units: ''
+      },
+      {
+      wafer_n: 4458, led_n: 'LED012', date: '12/02/2018', supplier: 'EPIGAP', supplier_pin: 'EOLC-740-27-2',
+      lot_n: '27144/174/6', bin_n: '', qty_wafer: 4838, manufacturing_date: '', test_current: '20mA',
+      min: '1.62', average: '1.65', max: '1.68', units: ''
+      },
+      {
+      wafer_n: 4459, led_n: 'LED012', date: '12/02/2018', supplier: 'EPIGAP', supplier_pin: 'EOLC-740-27-2',
+      lot_n: '27144/174/7', bin_n: '', qty_wafer: 5275, manufacturing_date: '', test_current: '20mA',
+      min: '1.60', average: '1.64', max: '1.68', units: ''
+      },
+      {
+      wafer_n: 4460, led_n: 'LED012', date: '12/02/2018', supplier: 'EPIGAP', supplier_pin: 'EOLC-740-27-2',
+      lot_n: '27144/174/9', bin_n: '', qty_wafer: 4574, manufacturing_date: '', test_current: '20mA',
+      min: '1.60', average: '1.62', max: '1.65', units: ''
+      },
+      {
+      wafer_n: 4461, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+      manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
+      },
+      {
+      wafer_n: 4462, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+      manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
+      },
+      {
+      wafer_n: 4463, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+      manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
+      },
+      {
+      wafer_n: 4464, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+      manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
+      },
+      {
+      wafer_n: 4465, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+      manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
+      },
+      {
+      wafer_n: 4466, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: 0,
+      manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
+      }
+    ];
 
     // Automatically resize columns
     this.gridApi.setHeaderHeight(65);
