@@ -39,27 +39,19 @@ export class AppComponent implements OnInit {
         children: [
           { headerName: 'Wafer no.', field: 'wafer_n', cellClass: 'cell-wafer-n', headerClass: 'headerMain', sort: 'asc',
             comparator: function(valueA, valueB, nodeA, nodeB, isInverted) {
-              const idA = (valueA + '').split('.');
-              const idB = (valueB + '').split('.');
-              const intA = parseFloat(idA[0]); const intB = parseFloat(idB[0]);
-              const decA = parseFloat(idA[1]); const decB = parseFloat(idB[1]);
-              if (!intA && !intB) {
-                return 0;
-              }
-              if (!intA || (intA < intB)) {
-                return -1;
-              }
-              if (!intB || (intA > intB)) {
-                return 1;
-              }
-              if (intA === intB) {
-                if (!decB || (decA > decB)) {
-                  return 1;
+              const nums1 = valueA.split('.');
+              const nums2 = valueB.split('.');
+
+              for (let i = 0; i < nums1.length; i++) {
+                if (nums2[i]) {
+                  if (nums1[i] !== nums2[i]) {
+                    return nums1[i] - nums2[i];
+                  } // else continue
                 } else {
-                  return -1;
+                  return 1; // no second number in b
                 }
               }
-              return 0;
+              return -1;
             }
           },
           { headerName: 'LED No.', field: 'led_n', cellClass: 'cell-led-n' },
@@ -165,17 +157,7 @@ export class AppComponent implements OnInit {
     // Automatically resize columns
     this.gridApi.setHeaderHeight(65);
     params.api.sizeColumnsToFit();
-    // this.autoSizeAll();
   }
-
-  // Automatically resize columns
-  // autoSizeAll() {
-  //   const allColumnIds = [];
-  //   this.gridColumnApi.getAllColumns().forEach(function(column) {
-  //     allColumnIds.push(column.colId);
-  //   });
-  //   this.gridColumnApi.autoSizeColumns(allColumnIds);
-  // }
 
   getSelectedRows() {
     const selectedNodes = this.agGrid.api.getSelectedNodes();
@@ -207,9 +189,7 @@ export class AppComponent implements OnInit {
     const selectedNodes = this.gridApi.getSelectedNodes();
     for (const rowNode of selectedNodes) {
       const rowData = Object.assign({}, rowNode.data);    // Make a copy of the row
-      // rowData.wafer_n = (1 * rowData.wafer_n + 0.1).toFixed(1);
       rowData.wafer_n = this.incrementDecimal(rowData.wafer_n);
-      console.log('New id =' + rowData.wafer_n);
       this.gridApi.updateRowData({ add: [rowData], addIndex: (rowNode.rowIndex + 1)});
       this.addUnsavedRow(rowData.wafer_n);
     }
@@ -223,7 +203,6 @@ export class AppComponent implements OnInit {
     } else {
       newDecimal = 1;
     }
-    console.log('Longueur: ' + (newDecimal + '').length);
     return (parseFloat(numStr[0] + '.' + newDecimal)).toFixed((newDecimal + '').length);
   }
 
@@ -297,8 +276,8 @@ export class AppComponent implements OnInit {
       this.unsavedRow.push(rowId);
       document.getElementById('saveButton').removeAttribute('disabled');
       /* DEBUG */
-      console.log('Pushed ' + rowId);
-      console.log('Currently in stock: ' + this.unsavedRow);
+      // console.log('Pushed ' + rowId);
+      // console.log('Currently in buffer: ' + this.unsavedRow);
     }
   }
 
