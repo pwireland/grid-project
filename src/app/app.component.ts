@@ -321,8 +321,8 @@ export class AppComponent implements OnInit {
   }
 
   onExport() {
-    this.gridApi.exportDataAsCsv({skipHeader: true, suppressQuotes: true,
-    customHeader: `wafer_n,led_n,date,supplier,supplier_pin,lot_n,bin_n,qty_wafer,manufacturing_date,test_current,min,average,max,units`
+    this.gridApi.exportDataAsCsv({skipHeader: true, suppressQuotes: false, customHeader:
+      `wafer_n,led_n,date,supplier,supplier_pin,lot_n,bin_n,qty_wafer,manufacturing_date,test_current,min,average,max,units`
     });
   }
 
@@ -333,6 +333,7 @@ export class AppComponent implements OnInit {
 
       // convert text to json array
       const json = this.csvJSON(text);
+      console.log(json);
       this.rowData = json;
 
       // add every relevant row to the unsaved buffer
@@ -343,10 +344,12 @@ export class AppComponent implements OnInit {
     reader.readAsText(csvFile.target.files[0]);
   }
 
-  public csvJSON(csv) {
+  csvJSON(csv) {
     const lines = csv.split('\n');
     const result = [];
-    const headers = lines[0].split(',');
+    const headers = lines[0].replace(/\r/g, '').replace(/"/g, '').split(',');
+    console.log(lines[0]);
+    console.log(headers);
 
     for (let i = 1; i < lines.length; i++) {
 
@@ -354,7 +357,7 @@ export class AppComponent implements OnInit {
         const currentline = lines[i].split(',');
 
         for (let j = 0; j < headers.length; j++) {
-            obj[headers[j].replace(/"/g, '')] = currentline[j].replace(/"/g, '');
+            obj[headers[j]] = currentline[j].replace(/\r/g, '').replace(/"/g, '');
         }
         result.push(obj);
     }
@@ -464,7 +467,7 @@ export class AppComponent implements OnInit {
       }
     });
     if (error > 0) {
-      alert('Error during saving. Make sure that the database is currently running and try again.');
+      alert('Error: make sure that the database is currently running and try again.');
     } else {
       this.clearUnsavedRows();
       alert('Saved to database');

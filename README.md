@@ -4,8 +4,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Requirements
 
-- [Node.js and npm](https://nodejs.org/en/) (built with Node.js v8.x and npm v5.x)
-- [Angular CLI](https://angular.io/) (built with angular cli v6.x)
+- [Node.js and npm](https://nodejs.org/en/) (built with Node.js v8 and npm v5)
+- [Angular CLI](https://angular.io/) (built with angular cli v6)
 - [MongoDB](https://www.mongodb.com/download-center) (built with Community edition v3.6)
 
 ## Run
@@ -14,6 +14,14 @@ Run `npm install` to install project dependencies.
 Then run `npm run build`* and navigate to `http://localhost:4200/`.
 
 \**NB: Make sure the MongoDB server is running before launching the application. Refer to the [MongoDB Documentation](https://docs.mongodb.com/) if needed.*
+
+## How to add a new data column
+
+1. Add a new line in the `server/models/led.js` mongoose Schema. This will tell the database that it needs to store a new value.
+2. Add a new column header to the grid in the constructor of `src/app/app.component.ts`. The grid header is built in with two layers: the group header ('Prophotonix data', etc.) and the sub-headers located in the `children` array element. The new column header should have at least a `headerName` and a `field` value.
+    * `headerName`corresponds to the name displayed in the grid
+    * `field` corresponds to the name you added to the Schema in step 1.
+3. Add the field value to the `customHeader` located in the `onExport` function in the same file. Make sure that you add it at the *right place* since the ordeer of the customHeader values matters when importing and exporting with CSV. 
 
 ## Code scaffolding
 
