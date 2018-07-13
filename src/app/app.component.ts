@@ -320,6 +320,48 @@ export class AppComponent implements OnInit {
     alert(`Selected nodes: ${selectedDataStringPresentation}`);
   }
 
+  onExport() {
+    this.gridApi.exportDataAsCsv({skipHeader: true, suppressQuotes: true,
+    customHeader: `wafer_n,led_n,date,supplier,supplier_pin,lot_n,bin_n,qty_wafer,manufacturing_date,test_current,min,average,max,units`
+    });
+  }
+
+  onImport(csvFile: any) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const text = reader.result;
+
+      // convert text to json array
+      const json = this.csvJSON(text);
+      this.rowData = json;
+
+      // add every relevant row to the unsaved buffer
+      for (const row of this.rowData) {
+        this.addUnsavedRow(row.wafer_n);
+      }
+    };
+    reader.readAsText(csvFile.target.files[0]);
+  }
+
+  public csvJSON(csv) {
+    const lines = csv.split('\n');
+    const result = [];
+    const headers = lines[0].split(',');
+
+    for (let i = 1; i < lines.length; i++) {
+
+        const obj = {};
+        const currentline = lines[i].split(',');
+
+        for (let j = 0; j < headers.length; j++) {
+            obj[headers[j].replace(/"/g, '')] = currentline[j].replace(/"/g, '');
+        }
+        result.push(obj);
+    }
+    // return result; //JavaScript object
+    return result;
+}
+
   /**
    *  Adds a new empty row to the grid.
    */
@@ -413,12 +455,20 @@ export class AppComponent implements OnInit {
    */
   saveGridData() {
     const self = this;
+    let error = 0;
     this.gridApi.forEachNode( function (rowNode, index) {
       if (self.unsavedRow.includes(rowNode.data.wafer_n)) {
-        self._dataService.saveRow(rowNode.data);
+        if (!self._dataService.saveRow(rowNode.data)) {
+          error++;
+        }
       }
     });
-    this.clearUnsavedRows();
+    if (error > 0) {
+      alert('Error during saving. Make sure that the database is currently running and try again.');
+    } else {
+      this.clearUnsavedRows();
+      alert('Saved to database');
+    }
   }
 
   /**

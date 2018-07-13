@@ -5,13 +5,23 @@
   </h1>
 </div>
 
-<ul>
+<!-- <ul>
   <li *ngFor="let led of leds">{{ led.wafer_n }}</li>
-</ul>
+</ul> -->
+<div>
+  <p>
+    <label>Export to CSV: </label>
+    <button (click)="onExport()">Export</button>
+  </p>
+  <p>
+    <label>Import from CSV: </label>
+    <input type="file" accept=".csv" id="CSVinputButton" (change)="onImport($event)">
+  </p>
+</div>
 
 <ag-grid-angular 
   #agGrid
-  style="width: 100%; height: 500px;" 
+  style="width: 100%; height: 40em;" 
   class="ag-theme-balham"
   [enableSorting]="true"
   [enableFilter]="true"
@@ -33,7 +43,7 @@
 <button class="button button-blue" (click)="onAddRow()">Add row</button>
 <button class="button button-red" (click)="onRemoveSelected()">Remove Selected</button>
 <button class="button button-blue" (click)="onCloneSelected()">Clone selected</button>
-<button class="button" (click)="parseAllLines()">Print console</button>
-<button class="button" (click)="getSelectedRows()">Get rows</button>
-<button class="button" id="saveButton" (click)="saveGridData()" disabled>SAVE changes</button>
-<button class="button button-red" (click)='clearDatabase()'>CLEAR Database (DANGER)</button>
+<!-- <button class="button" (click)="parseAllLines()">Print console</button>
+<button class="button" (click)="getSelectedRows()">Get rows</button> -->
+<button class="button" id="saveButton" (click)="saveGridData()" style="float: right;" disabled>SAVE changes</button>
+<button class="button button-red" (click)="clearDatabase()" style="float: right;">CLEAR Database (DEBUG)</button>

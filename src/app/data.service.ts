@@ -24,7 +24,7 @@ export class DataService {
           console.log('Worked');
         },
         err => {
-          console.log('Error occured during saveRow');
+          return false;
         }
       );
   }
