@@ -12,12 +12,16 @@ export class DataService {
 
   constructor(private _http: Http) { }
 
+  /*********************************************/
+  /*                  LEDS                     */
+  /*********************************************/
+
   getLeds() {
     return this._http.get('/api/leds')
       .pipe(map(res => res.json()));
   }
 
-  saveRow(obj: any) {
+  addLed(obj: any) {
     this._http.post('/api/leds/update', obj)
       .subscribe(
         res => {
@@ -29,27 +33,61 @@ export class DataService {
       );
   }
 
-  deleteLed(obj: any) {
+  removeLed(obj: any) {
     this._http.post('/api/leds/remove', obj)
       .subscribe(
         res => {
           console.log('Worked');
         },
         err => {
-          console.log('Error occured during deleteLed');
+          console.log('Error occured during removeLed');
         }
       );
   }
 
-  deleteAllLeds() {
+  removeAllLeds() {
     this._http.post('/api/leds/removeAll', {})
       .subscribe(
         res => {
           console.log('Worked');
         },
         err => {
-          console.log('Error occured during deleteAllLeds');
+          console.log('Error occured during removeAllLeds');
         }
       );
   }
+
+  /*********************************************/
+  /*               SUPPLIERS                   */
+  /*********************************************/
+
+  getSuppliers() {
+    return this._http.get('/api/suppliers')
+      .pipe(map(res => res.json()));
+  }
+
+  addSupplier(obj: any) {
+    this._http.post('/api/suppliers/add', obj)
+      .subscribe(
+        res => {
+          console.log('Worked');
+        },
+        err => {
+          return false;
+        }
+      );
+  }
+
+  removeSupplier(obj: any) {
+    this._http.post('api/suppliers/remove', obj)
+    .subscribe(
+      res => {
+        console.log('Worked');
+      },
+      err => {
+        return false;
+      }
+    );
+  }
+
 }

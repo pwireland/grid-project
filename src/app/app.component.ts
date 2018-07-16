@@ -30,6 +30,9 @@ export class AppComponent implements OnInit {
 
   private unsavedRow: Array<any> = [];  // Stores ids (wafer_n) of rows that need to be saved in the database
 
+  private headerArray: Array<String> = ['wafer_n', 'led_n', 'date', 'supplier', 'supplier_pin', 'lot_n', 'bin_n', 'qty_wafer',
+  'manufacturing_date', 'test_current', 'min', 'average', 'max', 'units'];
+
   // Defines column headers and parameters
   constructor(private _dataService: DataService) {
     this.columnDefs = [
@@ -321,8 +324,7 @@ export class AppComponent implements OnInit {
   }
 
   onExport() {
-    this.gridApi.exportDataAsCsv({skipHeader: true, suppressQuotes: false, customHeader:
-      `wafer_n,led_n,date,supplier,supplier_pin,lot_n,bin_n,qty_wafer,manufacturing_date,test_current,min,average,max,units`
+    this.gridApi.exportDataAsCsv({skipHeader: true, suppressQuotes: true, customHeader: this.headerArray.toString()
     });
   }
 
@@ -333,13 +335,8 @@ export class AppComponent implements OnInit {
 
       // convert text to json array
       const json = this.csvJSON(text);
-      console.log(json);
-      this.rowData = json;
-
-      // add every relevant row to the unsaved buffer
-      for (const row of this.rowData) {
-        this.addUnsavedRow(row.wafer_n);
-      }
+      this.addRows(json);
+      alert('Rows successfully added');
     };
     reader.readAsText(csvFile.target.files[0]);
   }
@@ -347,9 +344,14 @@ export class AppComponent implements OnInit {
   csvJSON(csv) {
     const lines = csv.split('\n');
     const result = [];
-    const headers = lines[0].replace(/\r/g, '').replace(/"/g, '').split(',');
-    console.log(lines[0]);
-    console.log(headers);
+    let headers = lines[0].replace(/\r/g, '').replace(/"/g, '').split(',');
+
+    // Header's validation
+    if (headers.length !== this.headerArray.length || headers.every((v, i) => v !== this.headerArray[i])) {
+      if (confirm('Error: the CSV header of the file seems wrong. Do you want to try to import it anyway?')) {
+        headers = this.headerArray;
+      }
+    }
 
     for (let i = 1; i < lines.length; i++) {
 
@@ -361,14 +363,13 @@ export class AppComponent implements OnInit {
         }
         result.push(obj);
     }
-    // return result; //JavaScript object
     return result;
 }
 
   /**
    *  Adds a new empty row to the grid.
    */
-  onAddRow() {
+  addEmptyRow() {
     let max = 0;
     this.gridApi.forEachNode(function (node, index) {
       if (node.data.wafer_n > max) {
@@ -384,7 +385,37 @@ export class AppComponent implements OnInit {
     this.addUnsavedRow(newItem.wafer_n);
   }
 
-  onCloneSelected() {
+  /**
+   * Adds one or many rows to the grid.
+   * @param rowsData Array containing row object data.
+   */
+  addRows(rowsData: Array<any>) {
+    let max = 0;
+    // finding the current max wafer_n
+    this.gridApi.forEachNode(function (node, index) {
+      if (node.data.wafer_n > max) {
+        max = node.data.wafer_n;
+      }
+    });
+    max = Math.floor(max) + 1;
+
+    // creating a new item
+    for (const row of rowsData) {
+      const newItem = {
+        wafer_n: max, led_n: row.led_n, date: row.date, supplier: row.supplier, supplier_pin: row.supplier_pin,
+        lot_n: row.lot_n, bin_n: row.bin_n, qty_wafer: row.qty_wafer, manufacturing_date: row.manufacturing_date,
+        test_current: row.test_current, min: row.min, average: row.average, max: row.max, units: row.units
+      };
+      max++;
+      const res = this.gridApi.updateRowData({ add: [newItem] });
+      this.addUnsavedRow(newItem.wafer_n);
+    }
+  }
+
+  /**
+   * Clones selected rows, incrementing their decimal id.
+   */
+  cloneSelected() {
     const selectedNodes = this.gridApi.getSelectedNodes();
     for (const rowNode of selectedNodes) {
       const rowData = Object.assign({}, rowNode.data);    // Make a copy of the row
@@ -394,7 +425,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  incrementDecimal(num: Number) {
+  private incrementDecimal(num: Number) {
     const numStr = (num + '').split('.');
     let newDecimal;
     if (numStr[1]) {
@@ -408,11 +439,11 @@ export class AppComponent implements OnInit {
   /**
    *  Removes selected rows from the grid and the database.
    */
-  onRemoveSelected() {
+  removeSelected() {
     if (confirm('Are you sure you want to delete the selected rows? This cannot be undone.')) {
       const selectedData = this.gridApi.getSelectedRows();
       for (const led of selectedData) {
-        this._dataService.deleteLed(led);
+        this._dataService.removeLed(led);
       }
       const res = this.gridApi.updateRowData({ remove: selectedData });
     }
@@ -461,7 +492,7 @@ export class AppComponent implements OnInit {
     let error = 0;
     this.gridApi.forEachNode( function (rowNode, index) {
       if (self.unsavedRow.includes(rowNode.data.wafer_n)) {
-        if (!self._dataService.saveRow(rowNode.data)) {
+        if (!self._dataService.addLed(rowNode.data)) {
           error++;
         }
       }
@@ -501,7 +532,7 @@ export class AppComponent implements OnInit {
    */
   clearDatabase() {
     if (confirm('Are you sure you want to completely CLEAR the database? This cannot be undone.')) {
-      this._dataService.deleteAllLeds();
+      this._dataService.removeAllLeds();
     }
   }
 }

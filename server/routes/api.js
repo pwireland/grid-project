@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/equipmentdb');
 
 const Led = require('../models/led.js');
+const Supplier = require('../models/supplier.js');
 
 // GET api listing.
 router.get('/', (req, res) => {
@@ -26,9 +27,13 @@ let response = {
     message: null
 };
 
+/*********************************************/
+/*                  LEDS                     */
+/*********************************************/
+
 // Get ALL leds
 router.get('/leds', (req, res) => {
-    Led.find({}, '-_id -__v', {sort: {wafer_n: 'asc'}}, function(err, leds) {
+    Led.find({}, '-_id -__v', { sort: { wafer_n: 'asc' } }, function (err, leds) {
         if (err) throw err;
         console.log('Leds fetched');
         res.status(200).json(leds);
@@ -39,11 +44,11 @@ router.get('/leds', (req, res) => {
 router.post('/leds/add', (req, res) => {
     let newLed = Led(req.body);
 
-    newLed.save(function(err) {
+    newLed.save(function (err) {
         if (err) throw err;
         console.log('Led created!');
         res.status(200).json();
-      });
+    });
 });
 
 // Update a led in the database or Create a new one if it doesn't exist
@@ -63,7 +68,7 @@ router.post('/leds/remove', (req, res) => {
     const number = req.body.wafer_n;        // Save wafer_n to display later
     Led.deleteOne(req.body, function (err, raw) {
         if (err) throw (err);
-        console.log('Led ' + number +' removed!');
+        console.log('Led ' + number + ' removed!');
         res.status(200).json();
     });
 });
@@ -73,6 +78,40 @@ router.post('/leds/removeAll', (req, res) => {
     Led.deleteMany({}, function (err, raw) {
         if (err) throw (err);
         console.log('EVERYTHING removed!');
+        res.status(200).json();
+    });
+});
+
+/*********************************************/
+/*                SUPPLIERS                  */
+/*********************************************/
+
+// Gets all suppliers
+router.get('/suppliers', (req, res) => {
+    Supplier.find({}, function (err, suppliers) {
+        if (err) throw err;
+        console.log('Suppliers fetched');
+        res.status(200).json(suppliers);
+    });
+});
+
+// Adds a new supplier
+router.post('/suppliers/add', (req, res) => {
+    let newSupplier = Supplier(req.body);
+
+    newSupplier.save(function (err) {
+        if (err) throw err;
+        console.log('Supplier created!');
+        res.status(200).json();
+    });
+});
+
+// Removes the supplier from the database
+router.post('/suppliers/remove', (req, res) => {
+    const name = req.body.name;        // Save supplier's name to display later
+    Supplier.deleteOne(req.body, function (err, raw) {
+        if (err) throw (err);
+        console.log(name + ' supplier removed!');
         res.status(200).json();
     });
 });

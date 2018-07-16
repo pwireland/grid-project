@@ -21,7 +21,7 @@ Then run `npm run build`* and navigate to `http://localhost:4200/`.
 2. Add a new column header to the grid in the constructor of `src/app/app.component.ts`. The grid header is built in with two layers: the group header ('Prophotonix data', etc.) and the sub-headers located in the `children` array element. The new column header should have at least a `headerName` and a `field` value.
     * `headerName`corresponds to the name displayed in the grid
     * `field` corresponds to the name you added to the Schema in step 1.
-3. Add the field value to the `customHeader` located in the `onExport` function in the same file. Make sure that you add it at the *right place* since the ordeer of the customHeader values matters when importing and exporting with CSV. 
+3. Add the field value to the `headerArray` variable in the same file. Make sure that you add it at the *right place* since the ordeer of the headerArray values matters when importing and exporting with CSV files. 
 
 ## Code scaffolding
 

@@ -10,10 +10,12 @@ import 'ag-grid-enterprise';
 // Import the Http Module and our Data Service
 import { HttpModule } from '@angular/http';
 import { DataService } from './data.service';
+import { SupplierManagementComponent } from './supplier-management/supplier-management.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SupplierManagementComponent
   ],
   imports: [
     BrowserModule,
