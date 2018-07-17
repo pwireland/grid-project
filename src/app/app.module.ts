@@ -1,27 +1,38 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppComponent } from './app.component';
+import { RouterModule, Routes } from '@angular/router';
 import { AgGridModule } from 'ag-grid-angular';
 import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
+import { DataService } from './data.service';
+
+import { AppComponent } from './app.component';
+import { SupplierManagementComponent } from './supplier-management/supplier-management.component';
+import { GridComponent } from './grid/grid.component';
 
 import 'ag-grid-enterprise';
 
-// Import the Http Module and our Data Service
-import { HttpModule } from '@angular/http';
-import { DataService } from './data.service';
-import { SupplierManagementComponent } from './supplier-management/supplier-management.component';
+const appRoutes: Routes = [
+  { path: '', component: GridComponent },
+  { path: 'supplier-management', component: SupplierManagementComponent },
+  { path: 'grid', component: GridComponent },
+  { path: '**', redirectTo: '/', pathMatch: 'full'}
+];
 
 @NgModule({
   declarations: [
     AppComponent,
-    SupplierManagementComponent
+    SupplierManagementComponent,
+    GridComponent
   ],
   imports: [
     BrowserModule,
     HttpModule,
     HttpClientModule,
-    AgGridModule.withComponents([])
+    AgGridModule.withComponents([]),
+    RouterModule.forRoot(
+      appRoutes
+    )
   ],
   providers: [DataService],
   bootstrap: [AppComponent]

@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"/>
+
+<div style="text-align:center">
+  <h1>
+    Grid view
+  </h1>
+</div>
+
+<div>
+  <p>
+    <label>Export to CSV: </label>
+    <button (click)="onExport()">Export</button>
+  </p>
+  <p>
+    <label>Import from CSV: </label>
+    <input type="file" accept=".csv" id="CSVinputButton" (change)="onImport($event)">
+  </p>
+</div>
+
+<ag-grid-angular 
+  #agGrid
+  style="width: 100%; height: 40em;" 
+  class="ag-theme-balham"
+  [enableSorting]="true"
+  [enableFilter]="true"
+  [rowData]="rowData" 
+  [columnDefs]="columnDefs"
+  [defaultColDef]="defaultColDef"
+  [enableColResize]="true"
+  [toolPanelSuppressSideButtons]="true"
+  [components]="components"
+  [cacheBlockSize]="cacheBlockSize"
+  [maxBlocksInCache]="maxBlocksInCache"
+  rowSelection="multiple"
+  (cellValueChanged)="onCellValueChanged($event)"
+  (gridReady)="onGridReady($event)"
+  >
+</ag-grid-angular>
+
+<button class="button button-blue" (click)="addEmptyRow()">Add row</button>
+<button class="button button-red" (click)="removeSelected()">Remove Selected</button>
+<button class="button button-blue" (click)="cloneSelected()">Clone selected</button>
+<button class="button" id="saveButton" (click)="saveGridData()" style="float: right;" disabled>SAVE changes</button>
+<button class="button button-red" (click)="clearDatabase()" style="float: right;">CLEAR Database (DEBUG)</button>
