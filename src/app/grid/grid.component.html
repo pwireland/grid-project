@@ -6,16 +6,18 @@
   </h1>
 </div>
 
-<div>
-  <p>
+<div style="width:100%; padding-bottom: 20px;">
+  <div style="float: left">
     <label>Export to CSV: </label>
-    <button (click)="onExport()">Export</button>
-  </p>
-  <p>
+    <button (click)="onExport()">Export...</button>
+  </div>
+  <div style="float: right">
     <label>Import from CSV: </label>
     <input type="file" accept=".csv" id="CSVinputButton" (change)="onImport($event)">
-  </p>
+  </div>
 </div>
+
+<br>
 
 <ag-grid-angular 
   #agGrid

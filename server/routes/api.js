@@ -88,7 +88,7 @@ router.post('/leds/removeAll', (req, res) => {
 
 // Gets all suppliers
 router.get('/suppliers', (req, res) => {
-    Supplier.find({}, function (err, suppliers) {
+    Supplier.find({}, null, { sort: { name: 'asc' } }, function (err, suppliers) {
         if (err) throw err;
         console.log('Suppliers fetched');
         res.status(200).json(suppliers);
@@ -97,9 +97,8 @@ router.get('/suppliers', (req, res) => {
 
 // Adds a new supplier
 router.post('/suppliers/add', (req, res) => {
-    let newSupplier = Supplier(req.body);
-
-    newSupplier.save(function (err) {
+    const newValues = req.body;
+    Supplier.update({name: newValues.name}, newValues, { upsert: true }, function (err) {
         if (err) throw err;
         console.log('Supplier created!');
         res.status(200).json();

@@ -3,3 +3,20 @@
     Suppliers management
   </h1>
 </div>
+
+<div style="padding-bottom: 4px;">
+  <label>
+      Update supplier list:
+      <input #newSupplier (keyup.enter)="addSupplier(newSupplier.value); newSupplier.value=''">
+  </label>
+  <label style="margin-left: 20px;">
+      <button class="button" (click)="addSupplier(newSupplier.value); newSupplier.value=''">Add</button>
+  </label>
+  <label style="margin-left: 20px;">
+      <button class="button button-red" (click)="removeSupplier(newSupplier.value); newSupplier.value=''">Remove</button>
+  </label>
+
+  <ul>
+    <li *ngFor="let supplier of suppliers">{{supplier.name}}</li>
+  </ul>
+</div>
