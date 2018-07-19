@@ -34,29 +34,29 @@ let response = {
 // Get ALL leds
 router.get('/leds', (req, res) => {
     Led.find({}, '-_id -__v', { sort: { wafer_n: 'asc' } }, function (err, leds) {
-        if (err) throw err;
+        if (err) return err;
         console.log('Leds fetched');
         res.status(200).json(leds);
     });
 });
 
 // Add a new led into the database
-router.post('/leds/add', (req, res) => {
-    let newLed = Led(req.body);
+// router.post('/leds/add', (req, res) => {
+//     let newLed = Led(req.body);
 
-    newLed.save(function (err) {
-        if (err) throw err;
-        console.log('Led created!');
-        res.status(200).json();
-    });
-});
+//     newLed.save(function (err) {
+//         if (err) return err;
+//         console.log('Led created!');
+//         res.status(200).json();
+//     });
+// });
 
 // Update a led in the database or Create a new one if it doesn't exist
 router.post('/leds/update', (req, res) => {
     const newValues = req.body;
     if (req.body.wafer_n >= 0) {
         Led.update({ wafer_n: req.body.wafer_n }, newValues, { upsert: true }, function (err, raw) {
-            if (err) throw (err);
+            if (err) res.status(500).json();
             console.log('Led updated!');
             res.status(200).json();
         });

@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, ViewEncapsulation, HostListener } from '@
 import { AgGridNg2 } from 'ag-grid-angular';
 import { DataService } from './../data.service';
 import { ValueParserParams } from 'ag-grid/dist/lib/entities/colDef';
-import { Router } from '../../../node_modules/@angular/router';
 import { PendingChangesGuard } from '../pending-changes.guard';
 import { Observable } from '../../../node_modules/rxjs';
 
@@ -34,7 +33,7 @@ export class GridComponent implements OnInit, PendingChangesGuard {
   private unsavedRow: Array<any> = [];  // Stores ids (wafer_n) of rows that need to be saved in the database
 
   private headerArray: Array<String> = ['wafer_n', 'led_n', 'date', 'supplier', 'supplier_pin', 'lot_n', 'bin_n', 'qty_wafer',
-  'manufacturing_date', 'test_current', 'min', 'average', 'max', 'units', 'status'];
+  'manufacturing_date', 'test_current', 'min', 'average', 'max', 'units'];
 
   // Defines column headers and parameters
   constructor(private _dataService: DataService) {
@@ -341,22 +340,33 @@ export class GridComponent implements OnInit, PendingChangesGuard {
   /**
    * Saves every unsaved row into the database, clearing unsaved changes in the process.
    */
-  saveGridData() {
-    const self = this;
-    let error = 0;
-    this.gridApi.forEachNode( function (rowNode, index) {
-      if (self.unsavedRow.includes(rowNode.data.wafer_n)) {
-        if (!self._dataService.addLed(rowNode.data)) {
-          error++;
-        }
-      }
-    });
-    if (error > 0) {
-      alert('Error: make sure that the database is currently running and try again.');
-    } else {
+  async saveGridData() {
+    const saveSucess = await this.trySave();
+
+    if (saveSucess) {
       this.clearUnsavedRows();
       alert('Saved to database');
+    } else {
+      alert('Error: make sure that the database is currently running and try again.');
     }
+  }
+
+  trySave() {
+    const self = this;
+
+    return new Promise(resolve => {
+      self.gridApi.forEachNode(function (rowNode, index) {
+        if (self.unsavedRow.includes(rowNode.data.wafer_n)) {
+          self._dataService.addLed(rowNode.data, function (err) {
+            if (err) {
+              resolve(false);
+            } else {
+              resolve(true);
+            }
+          });
+        }
+      });
+    });
   }
 
   /**

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -21,14 +21,16 @@ export class DataService {
       .pipe(map(res => res.json()));
   }
 
-  addLed(obj: any) {
+  addLed(obj: any, callback) {
     this._http.post('/api/leds/update', obj)
       .subscribe(
         res => {
           console.log('Worked');
+          callback();
         },
         err => {
-          return false;
+          console.log('Error occured during addLed');
+          callback(err);
         }
       );
   }
