@@ -9,11 +9,12 @@ import { DataService } from './data.service';
 import { AppComponent } from './app.component';
 import { SupplierManagementComponent } from './supplier-management/supplier-management.component';
 import { GridComponent } from './grid/grid.component';
+import { PendingChangesGuard } from './pending-changes.guard';
 
 import 'ag-grid-enterprise';
 
 const appRoutes: Routes = [
-  { path: '', component: GridComponent },
+  { path: '', component: GridComponent, canDeactivate: [PendingChangesGuard] },
   { path: 'supplier-management', component: SupplierManagementComponent },
   { path: 'grid', component: GridComponent },
   { path: '**', redirectTo: '/', pathMatch: 'full'}
@@ -34,7 +35,7 @@ const appRoutes: Routes = [
       appRoutes
     )
   ],
-  providers: [DataService],
+  providers: [DataService, PendingChangesGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

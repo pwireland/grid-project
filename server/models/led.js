@@ -17,7 +17,8 @@ var ledSchema = new Schema({
     min: Number,
     average: Number,
     max: Number,
-    units: String
+    units: String,
+    status: {type: String, default: "Pending"}
 });
 
 var Led = mongoose.model('Led', ledSchema);

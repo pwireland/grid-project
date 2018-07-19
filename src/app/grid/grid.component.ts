@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation, HostListener } from '@angular/core';
 import { AgGridNg2 } from 'ag-grid-angular';
 import { DataService } from './../data.service';
 import { ValueParserParams } from 'ag-grid/dist/lib/entities/colDef';
 import { Router } from '../../../node_modules/@angular/router';
+import { PendingChangesGuard } from '../pending-changes.guard';
+import { Observable } from '../../../node_modules/rxjs';
 
 // Used for Jquery datepicker
 declare var $: any;
@@ -13,7 +15,7 @@ declare var $: any;
   styleUrls: ['./grid.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class GridComponent implements OnInit {
+export class GridComponent implements OnInit, PendingChangesGuard {
   @ViewChild('agGrid') agGrid: AgGridNg2;
 
   title = 'Grid Project app';
@@ -32,7 +34,7 @@ export class GridComponent implements OnInit {
   private unsavedRow: Array<any> = [];  // Stores ids (wafer_n) of rows that need to be saved in the database
 
   private headerArray: Array<String> = ['wafer_n', 'led_n', 'date', 'supplier', 'supplier_pin', 'lot_n', 'bin_n', 'qty_wafer',
-  'manufacturing_date', 'test_current', 'min', 'average', 'max', 'units'];
+  'manufacturing_date', 'test_current', 'min', 'average', 'max', 'units', 'status'];
 
   // Defines column headers and parameters
   constructor(private _dataService: DataService) {
@@ -124,6 +126,10 @@ export class GridComponent implements OnInit {
             headerClass: 'headerMain', filter: 'agNumberColumnFilter' },
           { headerName: 'Units', field: 'units' }
         ]
+      },
+      {
+        headerName: 'Status', field: 'status', headerClass: 'headerMain', editable: 'false',
+        cellClass: 'cell-status'
       }
     ];
     this.components = { datePicker: getDatePicker() };
@@ -149,7 +155,6 @@ export class GridComponent implements OnInit {
     // Access the Data Service's getLeds() method to fill the grid
     this._dataService.getLeds().subscribe(data => {
       this.rowData = data;
-      console.log(data);
     });
 
     // Access the Data Service's getSuppliers() method to fetch suppliers names and update the dropdown menu
@@ -227,7 +232,7 @@ export class GridComponent implements OnInit {
     max = Math.floor(max) + 1;
     const newItem = {
       wafer_n: max, led_n: '', date: '', supplier: '', supplier_pin: '', lot_n: '', bin_n: '', qty_wafer: '',
-      manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: ''
+      manufacturing_date: '', test_current: '', min: '', average: '', max: '', units: '', status: 'Pending'
     };
     const res = this.gridApi.updateRowData({ add: [newItem] });
     this.addUnsavedRow(newItem.wafer_n);
@@ -252,7 +257,8 @@ export class GridComponent implements OnInit {
       const newItem = {
         wafer_n: max, led_n: row.led_n, date: row.date, supplier: row.supplier, supplier_pin: row.supplier_pin,
         lot_n: row.lot_n, bin_n: row.bin_n, qty_wafer: row.qty_wafer, manufacturing_date: row.manufacturing_date,
-        test_current: row.test_current, min: row.min, average: row.average, max: row.max, units: row.units
+        test_current: row.test_current, min: row.min, average: row.average, max: row.max, units: row.units,
+        status: row.status
       };
       max++;
       const res = this.gridApi.updateRowData({ add: [newItem] });
@@ -361,9 +367,6 @@ export class GridComponent implements OnInit {
     if (rowId !== 0 && !this.unsavedRow.includes(rowId)) {
       this.unsavedRow.push(rowId);
       document.getElementById('saveButton').removeAttribute('disabled');
-      /* DEBUG */
-      // console.log('Pushed ' + rowId);
-      // console.log('Currently in buffer: ' + this.unsavedRow);
     }
   }
 
@@ -382,6 +385,14 @@ export class GridComponent implements OnInit {
     if (confirm('Are you sure you want to completely CLEAR the database? This cannot be undone.')) {
       this._dataService.removeAllLeds();
     }
+  }
+
+  /**
+   * Handle windows closing when there is still unsaved data
+   */
+  @HostListener('window:beforeunload')
+  canDeactivate(): Observable<boolean> | boolean {
+    return (this.unsavedRow.length === 0);
   }
 }
 

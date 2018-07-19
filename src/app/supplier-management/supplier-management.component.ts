@@ -29,7 +29,6 @@ export class SupplierManagementComponent implements OnInit {
   ngOnInit() {
     this._dataService.getSuppliers().subscribe(data => {
       this.suppliers = data;
-      console.log(data);
     });
   }
 
