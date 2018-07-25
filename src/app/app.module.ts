@@ -11,9 +11,11 @@ import { GridComponent } from './grid/grid.component';
 import { PendingChangesGuard } from './pending-changes.guard';
 
 import 'ag-grid-enterprise';
+import { LoginComponent } from './login/login.component';
 
 const appRoutes: Routes = [
   { path: '', component: GridComponent, canDeactivate: [PendingChangesGuard] },
+  { path: 'login', component: LoginComponent },
   { path: 'supplier-management', component: SupplierManagementComponent },
   { path: 'grid', component: GridComponent },
   { path: '**', redirectTo: '/', pathMatch: 'full'}
@@ -23,7 +25,8 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     SupplierManagementComponent,
-    GridComponent
+    GridComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

@@ -13,7 +13,8 @@ var userSchema = new Schema({
         required: true
     },
     hash: String,
-    salt: String
+    salt: String,
+    role: {enum: ['Normal', 'Admin'], required: true, default: 'Normal'}
 });
 
 /**
