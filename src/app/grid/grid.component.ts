@@ -127,8 +127,9 @@ export class GridComponent implements OnInit, PendingChangesGuard {
         ]
       },
       {
-        headerName: 'Status', field: 'status', headerClass: 'headerMain', editable: 'false',
-        cellClass: 'cell-status'
+        headerName: 'Status', field: 'status', headerClass: 'headerMain', editable: false,
+        cellClass: 'cell-status', cellEditor: 'agRichSelectCellEditor',
+        cellEditorParams: { values: ['Pending', 'Approved', 'Need rework'] }
       }
     ];
     this.components = { datePicker: getDatePicker() };
@@ -175,11 +176,19 @@ export class GridComponent implements OnInit, PendingChangesGuard {
     params.api.sizeColumnsToFit();
   }
 
+  /**
+   * Called on grid export to a CSV file.
+   * Note: uses a custom array 'headerArray' to define the output file's header
+   */
   onExport() {
     this.gridApi.exportDataAsCsv({skipHeader: true, suppressQuotes: true, customHeader: this.headerArray.toString()
     });
   }
 
+  /**
+   * Called on grid import from a CSV file.
+   * @param csvFile Reference to the CSV file to read.
+   */
   onImport(csvFile: any) {
     const reader = new FileReader();
     reader.onload = () => {
@@ -204,7 +213,6 @@ export class GridComponent implements OnInit, PendingChangesGuard {
         headers = this.headerArray;
       }
     }
-
     for (let i = 1; i < lines.length; i++) {
 
         const obj = {};
@@ -357,7 +365,7 @@ export class GridComponent implements OnInit, PendingChangesGuard {
     return new Promise(resolve => {
       self.gridApi.forEachNode(function (rowNode, index) {
         if (self.unsavedRow.includes(rowNode.data.wafer_n)) {
-          self._dataService.addLed(rowNode.data, function (err) {
+          self._dataService.addLed(rowNode.data, err => {
             if (err) {
               resolve(false);
             } else {

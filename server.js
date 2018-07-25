@@ -3,6 +3,9 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
+const passport = require('passport');
+
+require('./server/config/passport');
 
 // Get our API routes
 const api = require('./server/routes/api');
@@ -15,6 +18,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Point static path to dist
 app.use(express.static(path.join(__dirname, 'dist')));
+
+// Initialise Passport before using the route middleware
+app.use(passport.initialize());
 
 // Set our api routes
 app.use('/api', api);

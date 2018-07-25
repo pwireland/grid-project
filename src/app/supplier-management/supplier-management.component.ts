@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DataService } from './../data.service';
 
 @Component({
@@ -19,11 +19,21 @@ export class SupplierManagementComponent implements OnInit {
   addSupplier(nameString: String) {
     const obj = {name: nameString};
     this._dataService.addSupplier(obj);
+    this._dataService.getSuppliers().subscribe(data => {
+      this.suppliers = data;
+    });
   }
 
+  /**
+   * Removes a supplier from the database.
+   * @param nameString Name of the supplier.
+   */
   removeSupplier(nameString: String) {
     const obj = {name: nameString};
     this._dataService.removeSupplier(obj);
+    this._dataService.getSuppliers().subscribe(data => {
+      this.suppliers = data;
+    });
   }
 
   ngOnInit() {

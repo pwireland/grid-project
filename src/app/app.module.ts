@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AgGridModule } from 'ag-grid-angular';
 import { HttpClientModule } from '@angular/common/http';
-import { HttpModule } from '@angular/http';
 import { DataService } from './data.service';
 
 import { AppComponent } from './app.component';
@@ -28,7 +27,6 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
-    HttpModule,
     HttpClientModule,
     AgGridModule.withComponents([]),
     RouterModule.forRoot(

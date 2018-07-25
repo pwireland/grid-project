@@ -6,17 +6,25 @@
 
 <div style="padding-bottom: 4px;">
   <label>
-      Update supplier list:
+      Add supplier:
       <input #newSupplier (keyup.enter)="addSupplier(newSupplier.value); newSupplier.value=''">
   </label>
   <label style="margin-left: 20px;">
       <button class="button" (click)="addSupplier(newSupplier.value); newSupplier.value=''">Add</button>
   </label>
-  <label style="margin-left: 20px;">
-      <button class="button button-red" (click)="removeSupplier(newSupplier.value); newSupplier.value=''">Remove</button>
-  </label>
 
-  <ul>
-    <li *ngFor="let supplier of suppliers">{{supplier.name}}</li>
-  </ul>
+  <table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let supplier of suppliers">
+      <td>{{supplier.name}}</td>
+      <td><button class="button button-red" (click)="removeSupplier(supplier.name)">Remove</button></td>
+    </tr>
+  </tbody>
+  </table>
 </div>

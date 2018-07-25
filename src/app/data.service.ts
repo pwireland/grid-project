@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { Http } from '@angular/http';
 import { map } from 'rxjs/operators';
+import { HttpClient } from '../../node_modules/@angular/common/http';
+import { Observable } from '../../node_modules/rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +12,14 @@ export class DataService {
 
   result: any;
 
-  constructor(private _http: Http) { }
+  constructor(private _http: HttpClient) { }
 
   /*********************************************/
   /*                  LEDS                     */
   /*********************************************/
 
-  getLeds() {
-    return this._http.get('/api/leds')
-      .pipe(map(res => res.json()));
+  getLeds(): Observable<any[]> {
+    return this._http.get<any[]>('/api/leds');
   }
 
   addLed(obj: any, callback) {
@@ -63,9 +64,8 @@ export class DataService {
   /*               SUPPLIERS                   */
   /*********************************************/
 
-  getSuppliers() {
-    return this._http.get('/api/suppliers')
-      .pipe(map(res => res.json()));
+  getSuppliers(): Observable<any[]> {
+    return this._http.get<any[]>('/api/suppliers');
   }
 
   addSupplier(obj: any) {
@@ -75,19 +75,19 @@ export class DataService {
           console.log('Worked');
         },
         err => {
-          return false;
+          console.log('Error occured in addSupplier');
         }
       );
   }
 
-  removeSupplier(obj: any) {
+  removeSupplier(obj: any, callback?) {
     this._http.post('api/suppliers/remove', obj)
     .subscribe(
       res => {
         console.log('Worked');
       },
       err => {
-        return false;
+        console.log('Error occured in removeSupplier');
       }
     );
   }
