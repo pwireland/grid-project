@@ -14,7 +14,7 @@ var userSchema = new Schema({
     },
     hash: String,
     salt: String,
-    role: {enum: ['Normal', 'Admin'], required: true, default: 'Normal'}
+    role: {type: String, enum: ['Normal', 'Admin'], required: true, default: 'Normal'}
 });
 
 /**
@@ -40,10 +40,13 @@ userSchema.methods.validPassword = function (password) {
  */
 userSchema.methods.generateJwt = function () {
 
+    let expiry = new Date();
+    expiry = parseInt(expiry.getTime() / 1000) + 3600   // Session expires after 1 hour
+
     return jwt.sign({
         _id: this._id,
         username: this.username,
-        exp: '1h',      // Session expires after 1 hour
+        exp: expiry,
     }, "MY_SECRET");    // DO NOT KEEP YOUR SECRET IN THE CODE!
 };
 

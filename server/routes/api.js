@@ -1,5 +1,10 @@
 const express = require('express');
 const router = express.Router();
+var jwt = require('express-jwt');
+var auth = jwt({
+  secret: 'MY_SECRET',
+  userProperty: 'payload'
+});
 
 // Mongoose import
 const mongoose = require('mongoose');
@@ -7,6 +12,11 @@ mongoose.connect('mongodb://localhost/equipmentdb');
 
 const Led = require('../models/led.js');
 const Supplier = require('../models/supplier.js');
+const User = require('../models/user.js');
+
+var ctrlGrid = require('../controllers/grid');
+var ctrlAuth = require('../controllers/authentication');
+var ctrlSupplier = require('../controllers/supplier-management');
 
 // GET api listing.
 router.get('/', (req, res) => {
@@ -114,5 +124,20 @@ router.post('/suppliers/remove', (req, res) => {
         res.status(200).json();
     });
 });
+
+/*********************************************/
+/*                  PAGES                    */
+/*********************************************/
+
+// suppliers management
+router.get('/supplier-management', auth, ctrlSupplier.supplierManagementRead);
+
+// grid
+router.get('/grid', auth, ctrlGrid.gridRead);
+
+// authentication
+router.post('/register', ctrlAuth.register);
+router.post('/login', ctrlAuth.login);
+
 
 module.exports = router;

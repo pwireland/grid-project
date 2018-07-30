@@ -5,6 +5,7 @@ const http = require('http');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 
+require('./server/models/user');
 require('./server/config/passport');
 
 // Get our API routes

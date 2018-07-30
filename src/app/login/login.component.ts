@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.auth.login(this.credentials).subscribe(() => {
+      console.log('Login successful');
       this.router.navigateByUrl('/grid');
     }, (err) => {
       console.error(err);

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, TestabilityRegistry } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators/map';
@@ -18,7 +18,7 @@ interface TokenResponse {
 
 export interface TokenPayload {
   password: string;
-  username?: string;
+  username: string;
 }
 
 
@@ -80,6 +80,11 @@ export class AuthenticationService {
     } else {
       return false;
     }
+  }
+
+  public isAdmin(): boolean {
+    const user = this.getUserDetails();
+    return (user.role === 'Admin');
   }
 
   private request(method: 'post'|'get', type: 'login'|'register'|'grid'|'supplier-management', user?: TokenPayload): Observable<any> {

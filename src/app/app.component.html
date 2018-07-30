@@ -1,8 +1,8 @@
 <nav id="cssmenu">
   <ul class="navBar">
     <li class="navItem"><a routerLink="/" routerLinkActive="active">Home</a></li>
-    <li *ngIf="auth.isLoggedIn()" class="navItem"><a routerLink="/supplier-management" routerLinkActive="active">Suppliers management</a></li>
-    <li *ngIf="auth.isLoggedIn()"><a (click)="auth.logout()">Logout</a></li>
+    <li *ngIf="auth.isAdmin()" class="navItem"><a routerLink="/supplier-management" routerLinkActive="active">Suppliers management</a></li>
+    <li *ngIf="auth.isLoggedIn()" class="navItem"><a (click)="auth.logout()">Logout</a></li>
   </ul>
 </nav>
 <router-outlet></router-outlet>
