@@ -1,4 +1,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"/>
+<div class="container" style="margin:0; max-width: 100%;">
+
+    <div class="row">
+  
+      <div class="col-md-12">
 
 <div style="text-align:center">
   <h1>
@@ -8,8 +13,7 @@
 
 <div style="width:100%; padding-bottom: 20px;">
   <div style="float: left">
-    <label>Export to CSV: </label>
-    <button (click)="onExport()">Export...</button>
+    <button class="btn btn-default" (click)="onExport()">Export to CSV...</button>
   </div>
   <div style="float: right">
     <label>Import from CSV: </label>
@@ -43,4 +47,8 @@
 <button class="button button-red" (click)="removeSelected()">Remove Selected</button>
 <button class="button button-blue" (click)="cloneSelected()">Clone selected</button>
 <button class="button" id="saveButton" (click)="saveGridData()" style="float: right;" disabled>SAVE changes</button>
-<button class="button button-red" (click)="clearDatabase()" style="float: right;">CLEAR Database (DEBUG)</button>
+<!-- <button class="button button-red" (click)="clearDatabase()" style="float: right;">CLEAR Database (DEBUG)</button> -->
+
+</div>
+</div>
+</div>

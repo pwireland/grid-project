@@ -84,7 +84,11 @@ export class AuthenticationService {
 
   public isAdmin(): boolean {
     const user = this.getUserDetails();
-    return (user.role === 'Admin');
+    if (user) {
+      return (user.role === 'Admin');
+    } else {
+      return false;
+    }
   }
 
   private request(method: 'post'|'get', type: 'login'|'register'|'grid'|'supplier-management', user?: TokenPayload): Observable<any> {

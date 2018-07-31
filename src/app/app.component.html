@@ -1,8 +1,10 @@
 <nav id="cssmenu">
   <ul class="navBar">
-    <li class="navItem"><a routerLink="/" routerLinkActive="active">Home</a></li>
-    <li *ngIf="auth.isAdmin()" class="navItem"><a routerLink="/supplier-management" routerLinkActive="active">Suppliers management</a></li>
-    <li *ngIf="auth.isLoggedIn()" class="navItem"><a (click)="auth.logout()">Logout</a></li>
+    <li class="home"><a routerLink="/">Home</a></li>
+    <li *ngIf="auth.isLoggedIn()"><a routerLink="/grid">Grid view</a></li>
+    <li *ngIf="auth.isAdmin()"><a routerLink="/supplier-management">Suppliers management</a></li>
+    <li *ngIf="auth.isLoggedIn()" class="logout" ><a (click)="auth.logout()">Logout</a></li>
   </ul>
 </nav>
+<br>
 <router-outlet></router-outlet>

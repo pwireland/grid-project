@@ -12,19 +12,20 @@
 
 .navBar {
     list-style-type: none;
-    margin: -8px;
+    margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: #333;
+    font-weight: bold;
 }
 
-.navItem {
+.navBar li {
     float: left;
     font-size: 15px;
     font-weight: bold;
 }
 
-.navItem a {
+.navBar li a {
     display: block;
     color: white;
     text-align: center;
@@ -32,8 +33,21 @@
     text-decoration: none;
 }
 
-.navItem a:hover {
+.navBar li a:hover {
     background-color: #337ab7;
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
 }
+
+.navBar .logout {
+    float: right;
+    cursor: pointer;
+}
+
+.navBar .logout a:hover {
+    background-color: #d13a3a;
+  }
+
+// .navBar .active {
+//     background-color: #337ab7;
+// }
