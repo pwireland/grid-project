@@ -46,6 +46,7 @@ userSchema.methods.generateJwt = function () {
     return jwt.sign({
         _id: this._id,
         username: this.username,
+        role: this.role,
         exp: expiry,
     }, "MY_SECRET");    // DO NOT KEEP YOUR SECRET IN THE CODE!
 };

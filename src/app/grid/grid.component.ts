@@ -4,6 +4,7 @@ import { DataService } from './../data.service';
 import { ValueParserParams } from 'ag-grid/dist/lib/entities/colDef';
 import { PendingChangesGuard } from '../pending-changes.guard';
 import { Observable } from '../../../node_modules/rxjs';
+import { AuthenticationService } from '../authentication.service';
 
 // Used for Jquery datepicker
 declare var $: any;
@@ -36,7 +37,7 @@ export class GridComponent implements OnInit, PendingChangesGuard {
   'manufacturing_date', 'test_current', 'min', 'average', 'max', 'units'];
 
   // Defines column headers and parameters
-  constructor(private _dataService: DataService) {
+  constructor(private _dataService: DataService, public auth: AuthenticationService) {
     this.columnDefs = [
       {
         headerName: 'PROPHOTONIX DATA',
@@ -170,6 +171,11 @@ export class GridComponent implements OnInit, PendingChangesGuard {
       // the column is now updated: to reflect the change, get the grid to refresh
       params.api.refreshCells();
     });
+
+    // Make the status column editable if the user is an Admin
+    const colStatus = params.columnApi.getColumn('status');
+    const colStatusDef = colStatus.getColDef();
+    colStatusDef.editable = this.auth.isAdmin();
 
     // Automatically resize columns
     this.gridApi.setHeaderHeight(65);
