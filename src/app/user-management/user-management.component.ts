@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-user-management',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserManagementComponent implements OnInit {
 
-  constructor() { }
+  private users: Array<any>;
+  public roles = ['Normal', 'Admin'];
+
+  constructor(private _dataService: DataService) { }
 
   ngOnInit() {
+    this._dataService.getUsers().subscribe(data => {
+      this.users = data;
+    });
+  }
+
+  saveRole(user) {
+    this._dataService.updateUserRole(user);
   }
 
 }

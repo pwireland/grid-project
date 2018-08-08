@@ -10,6 +10,7 @@ export class UserProfileComponent implements OnInit {
 
   private userDetails;
   private newDetails = {
+    username: '',
     currentPassword: '',
     newPassword: '',
     confirm: ''
@@ -19,10 +20,16 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit() {
     this.userDetails = this.auth.getUserDetails();
+    this.newDetails.username = this.userDetails.username;
   }
 
-  onSubmit(data, isValid: boolean) {
+  onSubmit() {
     console.log(this.newDetails);
+    this.auth.changePassword(this.newDetails).subscribe(() => {
+      console.log('Password change successful');
+    }, (err) => {
+      console.error(err);
+    });
   }
 
 }

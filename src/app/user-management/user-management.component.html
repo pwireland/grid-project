@@ -1,3 +1,36 @@
-<p>
-  user-management works!
-</p>
+<div style="text-align:center">
+  <h1>
+    User management
+  </h1>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12" style="padding-top: 10px">
+      <table class="table-striped" style="width: 100%">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email adress</th>
+          <th>Role</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{user.username}}</td>
+          <td>{{user.email}}</td>
+          <td>  
+            <select class="form-control" [(ngModel)]="user.role " required>
+              <option *ngFor="let role of roles" selected="user.role">{{role}}</option>
+            </select>
+          </td>
+          <td style="text-align:center;">
+            <button class="button btn-info" (click)="saveRole(user)">Update</button>
+          </td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>

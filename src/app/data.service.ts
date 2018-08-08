@@ -92,4 +92,24 @@ export class DataService {
     );
   }
 
+  /*********************************************/
+  /*                 USERS                     */
+  /*********************************************/
+
+  getUsers(): Observable<any[]> {
+    return this._http.get<any[]>('/api/users');
+  }
+
+  updateUserRole(obj: any, callback?) {
+    this._http.post('/api/users/updateRole', obj)
+      .subscribe(
+        res => {
+          console.log('Worked');
+        },
+        err => {
+          console.log('Error occured during updateUserRole');
+        }
+      );
+  }
+
 }

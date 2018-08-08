@@ -1,6 +1,6 @@
 <div style="text-align:center">
   <h1>
-    Your profile
+    Profile
   </h1>
 </div>
 
@@ -16,11 +16,11 @@
     </div>
 
     <div class="col-md-4" style="padding-top: 10px">
-      <form #f="ngForm" novalidate (ngSubmit)="onSubmit(f.value, f.valid)">
+      <form #f="ngForm" novalidate (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label>Current password</label>
           <input
-            type="text"
+            type="password"
             [(ngModel)]="newDetails.currentPassword"
             name="currentPassword"
             class="form-control"  
@@ -34,7 +34,7 @@
         <div class="form-group">
           <label>New password</label>
           <input
-            type="text"
+            type="password"
             [(ngModel)]="newDetails.newPassword"
             name="newPassword"
             class="form-control"
@@ -49,7 +49,7 @@
         <div class="form-group">
           <label>Confirm password</label>
           <input
-            type="text"
+            type="password"
             [(ngModel)]="newDetails.confirm"
             name="confirm"
             class="form-control"

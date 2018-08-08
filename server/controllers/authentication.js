@@ -45,5 +45,40 @@ module.exports.login = function (req, res) {
             res.status(401).json(info);
         }
     })(req, res);
+};
 
+module.exports.changePassword = function (req, res) {
+
+    User.findOne({ username: req.body.username }, function (err, user) {
+        if (err) res.status(404).json(err);
+
+        // If user is not found
+        if (!user) {
+            res.status(404).json('User not found');
+            return;
+        }
+
+        // If password in not valid
+        if (!user.validPassword(req.body.currentPassword)) {
+            res.status(401).json('Incorrect password');
+            return;
+        }
+        
+        // If new password and confirmation do not match
+        if (req.body.newPassword !== req.body.confirm) {
+            res.status(401).json('Confirm password do not match');
+            return;
+        }
+        
+        user.setPassword(req.body.newPassword);
+
+        user.save(function (err) {
+            let token;
+            token = user.generateJwt();
+            res.status(200);
+            res.json({
+                "token": token
+            });
+        });
+    });
 };

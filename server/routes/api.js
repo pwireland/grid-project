@@ -126,7 +126,30 @@ router.post('/suppliers/remove', (req, res) => {
 });
 
 /*********************************************/
-/*                  PAGES                    */
+/*                  USERS                    */
+/*********************************************/
+
+// Gets all users
+router.get('/users', (req, res) => {
+    User.find({}, '-_id -__v -salt -hash', { sort: { username: 'asc' } }, function (err, users) {
+        if (err) throw err;
+        console.log('Users fetched');
+        res.status(200).json(users);
+    });
+});
+
+// Update user role
+router.post('/users/updateRole', (req, res) => {
+    const newRole = req.body.role;
+    User.update({ username: req.body.username }, { $set: { role: newRole} }, function (err, raw) {
+        if (err) res.status(500).json();
+        console.log('User role updated!');
+        res.status(200).json();
+    });
+});
+
+/*********************************************/
+/*         PAGES with Authentication         */
 /*********************************************/
 
 // suppliers management
@@ -139,5 +162,6 @@ router.get('/grid', auth, ctrlGrid.gridRead);
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
 
+router.post('/changePassword', ctrlAuth.changePassword);
 
 module.exports = router;
