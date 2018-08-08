@@ -10,10 +10,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Run
 
-Run `npm install` to install project dependencies.
-Then run `npm run build`* and navigate to `http://localhost:4200/`.
-
-\**NB: Make sure the MongoDB server is running before launching the application. Refer to the [MongoDB Documentation](https://docs.mongodb.com/) if needed.*
+1. Run `npm install` to install project dependencies.
+2. Make sure that the MongoDB server is running before launching the application. Refer to the [MongoDB Documentation](https://docs.mongodb.com/) if needed.
+3. Run `npm run build` and navigate to `http://localhost:4200/`.
 
 ## How to add a new data column
 

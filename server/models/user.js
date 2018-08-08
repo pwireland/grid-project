@@ -12,9 +12,14 @@ var userSchema = new Schema({
         unique: true,
         required: true
     },
+    email: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    role: {type: String, enum: ['Normal', 'Admin'], required: true, default: 'Normal'},
     hash: String,
-    salt: String,
-    role: {type: String, enum: ['Normal', 'Admin'], required: true, default: 'Normal'}
+    salt: String
 });
 
 /**
@@ -46,6 +51,7 @@ userSchema.methods.generateJwt = function () {
     return jwt.sign({
         _id: this._id,
         username: this.username,
+        email: this.email,
         role: this.role,
         exp: expiry,
     }, "MY_SECRET");    // DO NOT KEEP YOUR SECRET IN THE CODE!

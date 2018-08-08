@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 export interface UserDetails {
   _id: string;
   name: string;
+  email: string;
   exp: number;
   iat: number;
   role: string;
@@ -17,6 +18,7 @@ interface TokenResponse {
 }
 
 export interface TokenPayload {
+  email: string;
   password: string;
   username: string;
 }

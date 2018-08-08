@@ -2,8 +2,10 @@
   <ul class="navBar">
     <li class="home"><a routerLink="/">Home</a></li>
     <li *ngIf="auth.isLoggedIn()"><a routerLink="/grid">Grid view</a></li>
-    <li *ngIf="auth.isAdmin()"><a routerLink="/supplier-management">Suppliers management</a></li>
-    <li *ngIf="auth.isLoggedIn()" class="logout" ><a (click)="auth.logout()">Logout</a></li>
+    <li *ngIf="auth.isAdmin()"><a routerLink="/supplier-management">Supplier management</a></li>
+    <li *ngIf="auth.isAdmin()"><a routerLink="/user-management">User management</a></li>
+    <li *ngIf="auth.isLoggedIn()" class="left-aligned logout" ><a (click)="auth.logout()">Logout</a></li>
+    <li *ngIf="auth.isLoggedIn()" class="left-aligned"><a routerLink="/user-profile">Profile</a></li>
   </ul>
 </nav>
 <br>

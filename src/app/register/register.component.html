@@ -8,6 +8,10 @@
 
       <form (submit)="register()">
         <div class="form-group">
+          <label for="email">Email adress</label>
+          <input type="email" class="form-control" name="email" placeholder="Enter an email adress" [(ngModel)]="credentials.email">
+        </div>
+        <div class="form-group">
           <label for="username">New username</label>
           <input type="text" class="form-control" name="name" placeholder="Enter a username" [(ngModel)]="credentials.name">
         </div>

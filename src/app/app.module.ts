@@ -16,13 +16,18 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuardService } from './auth-guard.service';
 import { RegisterComponent } from './register/register.component';
 import { AdminGuardService } from './admin-guard.guard';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { EqualValidatorDirective } from './equal-validator.directive';
 
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuardService] },
   { path: 'supplier-management', component: SupplierManagementComponent, canActivate: [AdminGuardService] },
   { path: 'grid', component: GridComponent, canActivate: [AuthGuardService], canDeactivate: [PendingChangesGuard] },
+  { path: 'user-management', component: UserManagementComponent, canActivate: [AdminGuardService] },
   { path: '**', redirectTo: '/', pathMatch: 'full'}
 ];
 
@@ -32,7 +37,10 @@ const appRoutes: Routes = [
     SupplierManagementComponent,
     GridComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    UserManagementComponent,
+    UserProfileComponent,
+    EqualValidatorDirective
   ],
   imports: [
     BrowserModule,

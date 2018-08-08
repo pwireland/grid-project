@@ -1,0 +1,68 @@
+<div style="text-align:center">
+  <h1>
+    Your profile
+  </h1>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12" style="padding-top: 10px">
+      <div style="text-align:center">You can use this page to change your password and see your profile details.</div>
+    </div>
+
+    <div class="col-md-6" style="padding-top: 10px">
+      <p><b>Username:</b> {{userDetails.username}}</p>
+      <p><b>Email:</b> {{userDetails.email}}</p>
+    </div>
+
+    <div class="col-md-4" style="padding-top: 10px">
+      <form #f="ngForm" novalidate (ngSubmit)="onSubmit(f.value, f.valid)">
+        <div class="form-group">
+          <label>Current password</label>
+          <input
+            type="text"
+            [(ngModel)]="newDetails.currentPassword"
+            name="currentPassword"
+            class="form-control"  
+            required #currentPassword="ngModel">
+        </div>
+        <div [hidden]="currentPassword.valid || (currentPassword.pristine && !f.submitted)"
+          class="alert alert-danger">
+          Current password is required
+        </div>
+
+        <div class="form-group">
+          <label>New password</label>
+          <input
+            type="text"
+            [(ngModel)]="newDetails.newPassword"
+            name="newPassword"
+            class="form-control"
+            required #newPassword="ngModel"
+            validateEqual="confirm" reverse="true">
+        </div>
+        <div [hidden]="newPassword.valid || (newPassword.pristine && !f.submitted)"
+          class="alert alert-danger">
+          New password is required
+        </div>
+
+        <div class="form-group">
+          <label>Confirm password</label>
+          <input
+            type="text"
+            [(ngModel)]="newDetails.confirm"
+            name="confirm"
+            class="form-control"
+            required #confirm="ngModel"
+            validateEqual="newPassword">
+        </div>
+        <div [hidden]="confirm.valid || (confirm.pristine && !f.submitted)"
+          class="alert alert-danger">
+          Password mismatch
+      </div>
+
+        <button type="submit" class="btn btn-success">Update password</button>
+      </form>
+    </div>
+  </div>
+</div>

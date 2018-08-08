@@ -343,7 +343,7 @@ export class GridComponent implements OnInit, PendingChangesGuard {
   }
 
   /**
-   * Triggered when a cell is edited.
+   * Triggered when a cell is edited. Adds the edited row into the "unsaved rows buffer".
    * @param rowNode Contains the modified row's node.
    */
   onCellValueChanged(rowNode: any) {
@@ -439,7 +439,7 @@ function getDatePicker() {
   Datepicker.prototype.init = function(params) {
     this.eInput = document.createElement('input');
     this.eInput.value = params.value;
-    // Datepicker initialization: maxDate = today (0)
+    // Datepicker initialization: maxDate = 0 (today)
     $(this.eInput).datepicker({ dateFormat: 'dd/mm/yy', maxDate: 0 });
   };
   Datepicker.prototype.getGui = function() {
