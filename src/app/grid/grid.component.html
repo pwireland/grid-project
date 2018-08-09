@@ -2,9 +2,7 @@
 <div class="container" style="margin:0; max-width: 100%;">
 
   <div class="row">
-
     <div class="col-md-12">
-
       <div style="text-align:center">
         <h1>
           Grid view
@@ -17,7 +15,7 @@
         </div>
         <div style="float: right">
           <label>Import from CSV: </label>
-          <input type="file" accept=".csv" id="CSVinputButton" (change)="onImport($event)">
+          <input type="file" accept=".csv" id="CSVinputButton" (change)="onImport($event)"> 
         </div>
       </div>
 
@@ -30,8 +28,8 @@
       </ag-grid-angular>
 
       <button class="button button-blue" (click)="addEmptyRow()">Add row</button>
-      <button class="button button-red" (click)="removeSelected()">Remove Selected</button>
-      <button class="button button-blue" (click)="cloneSelected()">Clone selected</button>
+      <button class="button button-orange" (click)="cloneSelected()">Clone selected</button>
+      <button class="button button-red" (click)="removeSelected()">Remove selected</button>
       <button class="button" id="saveButton" (click)="saveGridData()" style="float: right;" disabled>SAVE changes</button>
       <!-- <button class="button button-red" (click)="clearDatabase()" style="float: right;">CLEAR Database (DEBUG)</button> -->
 

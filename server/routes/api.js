@@ -66,9 +66,9 @@ router.post('/leds/update', (req, res) => {
     const newValues = req.body;
     if (req.body.wafer_n >= 0) {
         Led.update({ wafer_n: req.body.wafer_n }, newValues, { upsert: true }, function (err, raw) {
-            if (err) res.status(500).json();
+            if (err) res.status(500).json(err);
             console.log('Led updated!');
-            res.status(200).json();
+            res.status(200).json(raw);
         });
     };
 });
@@ -132,7 +132,7 @@ router.post('/suppliers/remove', (req, res) => {
 // Gets all users
 router.get('/users', (req, res) => {
     User.find({}, '-_id -__v -salt -hash', { sort: { username: 'asc' } }, function (err, users) {
-        if (err) throw err;
+        if (err) res.status(500).json(err);
         console.log('Users fetched');
         res.status(200).json(users);
     });
@@ -142,9 +142,10 @@ router.get('/users', (req, res) => {
 router.post('/users/updateRole', (req, res) => {
     const newRole = req.body.role;
     User.update({ username: req.body.username }, { $set: { role: newRole} }, function (err, raw) {
-        if (err) res.status(500).json();
-        console.log('User role updated!');
-        res.status(200).json();
+        if (err) res.status(500).json(err);
+        if (raw.n === 0) res.status(404).json('User not found.');
+        console.log('User role updated');
+        res.status(200).json('User\'s role successfully updated.');
     });
 });
 

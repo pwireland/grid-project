@@ -5,17 +5,21 @@
 </div>
 
 <div class="container">
+
+  <p *ngFor="let alert of alerts">
+    <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{ alert.message }}</ngb-alert>
+  </p>
+  
   <div class="row">
-    <div class="col-md-12" style="padding-top: 10px">
-      <div style="text-align:center">You can use this page to change your password and see your profile details.</div>
-    </div>
 
     <div class="col-md-6" style="padding-top: 10px">
+      <h2>Details</h2>
       <p><b>Username:</b> {{userDetails.username}}</p>
       <p><b>Email:</b> {{userDetails.email}}</p>
     </div>
 
     <div class="col-md-4" style="padding-top: 10px">
+      <h2>Change password</h2>
       <form #f="ngForm" novalidate (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label>Current password</label>
@@ -39,11 +43,12 @@
             name="newPassword"
             class="form-control"
             required #newPassword="ngModel"
+            minlength="5"
             validateEqual="confirm" reverse="true">
         </div>
         <div [hidden]="newPassword.valid || (newPassword.pristine && !f.submitted)"
           class="alert alert-danger">
-          New password is required
+          New password must contain at leat 5 characters
         </div>
 
         <div class="form-group">
@@ -58,10 +63,10 @@
         </div>
         <div [hidden]="confirm.valid || (confirm.pristine && !f.submitted)"
           class="alert alert-danger">
-          Password mismatch
-      </div>
+          Password does not match
+        </div>
 
-        <button type="submit" class="btn btn-success">Update password</button>
+        <button type="submit" [disabled]="!f.valid" class="button">Update password</button>
       </form>
     </div>
   </div>

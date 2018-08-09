@@ -23,7 +23,6 @@ export interface TokenPayload {
   username: string;
 }
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -75,6 +74,9 @@ export class AuthenticationService {
     }
   }
 
+  /**
+   * Return true if the user is logged in and its token is valid
+   */
   public isLoggedIn(): boolean {
     const user = this.getUserDetails();
     if (user) {
@@ -84,10 +86,13 @@ export class AuthenticationService {
     }
   }
 
+  /**
+   * Return true if the user is logged in and is an administrator
+   */
   public isAdmin(): boolean {
     const user = this.getUserDetails();
     if (user) {
-      return (user.role === 'Admin');
+      return (this.isLoggedIn() && user.role === 'Admin');
     } else {
       return false;
     }

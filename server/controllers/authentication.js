@@ -12,12 +12,16 @@ module.exports.register = function (req, res) {
     user.setPassword(req.body.password);
 
     user.save(function (err) {
-        let token;
-        token = user.generateJwt();
-        res.status(200);
-        res.json({
-            "token": token
-        });
+        if (err) {
+            res.status(401).json('User or email address already existing.')
+        } else {
+            let token;
+            token = user.generateJwt();
+            res.status(200);
+            res.json({
+                "token": token
+            });
+        }
     });
 };
 
@@ -54,19 +58,19 @@ module.exports.changePassword = function (req, res) {
 
         // If user is not found
         if (!user) {
-            res.status(404).json('User not found');
+            res.status(404).json('User not found.');
             return;
         }
 
         // If password in not valid
         if (!user.validPassword(req.body.currentPassword)) {
-            res.status(401).json('Incorrect password');
+            res.status(401).json('Current password is incorrect.');
             return;
         }
         
         // If new password and confirmation do not match
         if (req.body.newPassword !== req.body.confirm) {
-            res.status(401).json('Confirm password do not match');
+            res.status(401).json('Confirmation password does not match.');
             return;
         }
         

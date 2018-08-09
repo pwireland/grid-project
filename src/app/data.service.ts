@@ -27,11 +27,11 @@ export class DataService {
       .subscribe(
         res => {
           console.log('Worked');
-          callback();
+          callback(res, null);
         },
         err => {
           console.log('Error occured during addLed');
-          callback(err);
+          callback(null, err);
         }
       );
   }
@@ -105,9 +105,11 @@ export class DataService {
       .subscribe(
         res => {
           console.log('Worked');
+          callback(res, null);
         },
         err => {
           console.log('Error occured during updateUserRole');
+          callback(null, err);
         }
       );
   }

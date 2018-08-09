@@ -5,6 +5,11 @@
 </div>
 
 <div class="container">
+
+  <p *ngFor="let alert of alerts">
+    <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{ alert.message }}</ngb-alert>
+  </p>
+
   <div class="row">
     <div class="col-md-12" style="padding-top: 10px">
       <table class="table-striped" style="width: 100%">
@@ -21,7 +26,7 @@
           <td>{{user.username}}</td>
           <td>{{user.email}}</td>
           <td>  
-            <select class="form-control" [(ngModel)]="user.role " required>
+            <select class="form-control" [(ngModel)]="user.role" required>
               <option *ngFor="let role of roles" selected="user.role">{{role}}</option>
             </select>
           </td>

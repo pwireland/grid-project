@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthenticationService, TokenPayload } from '../authentication.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { AuthenticationService } from '../authentication.service';
+
+export interface IAlert {
+  type: string;
+  message: string;
+}
 
 @Component({
   selector: 'app-user-profile',
@@ -7,7 +12,6 @@ import { AuthenticationService, TokenPayload } from '../authentication.service';
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
-
   private userDetails;
   private newDetails = {
     username: '',
@@ -16,6 +20,9 @@ export class UserProfileComponent implements OnInit {
     confirm: ''
   };
 
+  @Input()
+  public alerts: Array<IAlert> = [];
+
   constructor(public auth: AuthenticationService) { }
 
   ngOnInit() {
@@ -23,13 +30,23 @@ export class UserProfileComponent implements OnInit {
     this.newDetails.username = this.userDetails.username;
   }
 
+  /**
+   * Submits a password change request to the server. An alert is displayed depending on the
+   * result of this request.
+   */
   onSubmit() {
-    console.log(this.newDetails);
+    this.alerts.pop();
     this.auth.changePassword(this.newDetails).subscribe(() => {
-      console.log('Password change successful');
+      this.alerts.push({type: 'success', message: 'Password successfully changed!'});
     }, (err) => {
       console.error(err);
+      this.alerts.push({type: 'danger', message: err.error});
     });
+  }
+
+  closeAlert(alert) {
+    const index: number = this.alerts.indexOf(alert);
+    this.alerts.splice(index, 1);
   }
 
 }

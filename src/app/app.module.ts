@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
 import { AgGridModule } from 'ag-grid-angular';
 import { HttpClientModule } from '@angular/common/http';
@@ -47,9 +48,8 @@ const appRoutes: Routes = [
     HttpClientModule,
     FormsModule,
     AgGridModule.withComponents([]),
-    RouterModule.forRoot(
-      appRoutes
-    )
+    RouterModule.forRoot(appRoutes),
+    NgbModule.forRoot()
   ],
   providers: [DataService, PendingChangesGuard],
   bootstrap: [AppComponent]
