@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, TokenPayload } from '../authentication.service';
 import { Router } from '@angular/router';
-
-export interface IAlert {
-  type: string;
-  message: string;
-}
+import { IAlert } from '../ialert';
 
 @Component({
   selector: 'app-login',

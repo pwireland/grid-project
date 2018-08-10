@@ -371,7 +371,7 @@ export class GridComponent implements OnInit, PendingChangesGuard {
     return new Promise(resolve => {
       self.gridApi.forEachNode(function (rowNode, index) {
         if (self.unsavedRow.includes(rowNode.data.wafer_n)) {
-          self._dataService.addLed(rowNode.data, (res, err) => {
+          self._dataService.addLed(rowNode.data, (err, res) => {
             if (err) {
               resolve(false);
             } else {

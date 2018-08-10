@@ -5,6 +5,11 @@
 </div>
 
 <div class="container">
+
+  <p *ngFor="let alert of alerts">
+    <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{ alert.message }}</ngb-alert>
+  </p>
+
   <div class="row">
     <div class="col-md-12" style="padding-top: 10px">
       

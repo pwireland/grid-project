@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
-
-export interface IAlert {
-  type: string;
-  message: string;
-}
+import { IAlert } from '../ialert';
 
 @Component({
   selector: 'app-user-management',
@@ -26,7 +22,7 @@ export class UserManagementComponent implements OnInit {
   }
 
   saveRole(user) {
-    this._dataService.updateUserRole(user, (res, err) => {
+    this._dataService.updateUserRole(user, (err, res) => {
       this.alerts.pop();
       if (err) {
         this.alerts.push({type: 'danger', message: err.error});

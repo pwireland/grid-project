@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { Http } from '@angular/http';
-import { map } from 'rxjs/operators';
 import { HttpClient } from '../../node_modules/@angular/common/http';
 import { Observable } from '../../node_modules/rxjs';
 
@@ -9,8 +7,6 @@ import { Observable } from '../../node_modules/rxjs';
   providedIn: 'root'
 })
 export class DataService {
-
-  result: any;
 
   constructor(private _http: HttpClient) { }
 
@@ -22,16 +18,16 @@ export class DataService {
     return this._http.get<any[]>('/api/leds');
   }
 
-  addLed(obj: any, callback) {
+  addLed(obj: any, callback?: (err, res) => void) {
     this._http.post('/api/leds/update', obj)
       .subscribe(
         res => {
           console.log('Worked');
-          callback(res, null);
+          callback(null, res);
         },
         err => {
           console.log('Error occured during addLed');
-          callback(null, err);
+          callback(err, null);
         }
       );
   }
@@ -68,26 +64,30 @@ export class DataService {
     return this._http.get<any[]>('/api/suppliers');
   }
 
-  addSupplier(obj: any) {
+  addSupplier(obj: any, callback?: (err, res) => void) {
     this._http.post('/api/suppliers/add', obj)
       .subscribe(
         res => {
           console.log('Worked');
+          callback(null, res);
         },
         err => {
           console.log('Error occured in addSupplier');
+          callback(err, null);
         }
       );
   }
 
-  removeSupplier(obj: any, callback?) {
+  removeSupplier(obj: any, callback?: (err, res) => void) {
     this._http.post('api/suppliers/remove', obj)
     .subscribe(
       res => {
         console.log('Worked');
+        callback(null, res);
       },
       err => {
         console.log('Error occured in removeSupplier');
+        callback(err, null);
       }
     );
   }
@@ -100,16 +100,16 @@ export class DataService {
     return this._http.get<any[]>('/api/users');
   }
 
-  updateUserRole(obj: any, callback?) {
+  updateUserRole(obj: any, callback?: (err, res) => void) {
     this._http.post('/api/users/updateRole', obj)
       .subscribe(
         res => {
           console.log('Worked');
-          callback(res, null);
+          callback(null, res);
         },
         err => {
           console.log('Error occured during updateUserRole');
-          callback(null, err);
+          callback(err, null);
         }
       );
   }

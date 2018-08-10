@@ -1,10 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
-
-export interface IAlert {
-  type: string;
-  message: string;
-}
+import { IAlert } from '../ialert';
 
 @Component({
   selector: 'app-user-profile',

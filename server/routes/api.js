@@ -8,7 +8,7 @@ var auth = jwt({
 
 // Mongoose import
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/equipmentdb');
+mongoose.connect('mongodb://localhost:27017/equipmentdb', { useNewUrlParser: true });
 
 const Led = require('../models/led.js');
 const Supplier = require('../models/supplier.js');
@@ -99,7 +99,7 @@ router.post('/leds/removeAll', (req, res) => {
 // Gets all suppliers
 router.get('/suppliers', (req, res) => {
     Supplier.find({}, null, { sort: { name: 'asc' } }, function (err, suppliers) {
-        if (err) throw err;
+        if (err) res.status(500).json(err);
         console.log('Suppliers fetched');
         res.status(200).json(suppliers);
     });
@@ -109,19 +109,19 @@ router.get('/suppliers', (req, res) => {
 router.post('/suppliers/add', (req, res) => {
     const newValues = req.body;
     Supplier.update({name: newValues.name}, newValues, { upsert: true }, function (err) {
-        if (err) throw err;
+        if (err) res.status(500).json('An error occured while adding the supplier');
         console.log('Supplier created!');
-        res.status(200).json();
+        res.status(200).json('Supplier successfully added.');
     });
 });
 
 // Removes the supplier from the database
-router.post('/suppliers/remove', (req, res) => {
+router.post('/suppliers/remove', function (req, res) {
     const name = req.body.name;        // Save supplier's name to display later
-    Supplier.deleteOne(req.body, function (err, raw) {
-        if (err) throw (err);
+    Supplier.deleteOne(req.body, err => {
+        if (err) res.status(500).json('An error occured while removing the supplier');
         console.log(name + ' supplier removed!');
-        res.status(200).json();
+        res.status(200).json('Supplier successfully removed.');
     });
 });
 
@@ -142,7 +142,7 @@ router.get('/users', (req, res) => {
 router.post('/users/updateRole', (req, res) => {
     const newRole = req.body.role;
     User.update({ username: req.body.username }, { $set: { role: newRole} }, function (err, raw) {
-        if (err) res.status(500).json(err);
+        if (err) res.status(500).json('An error occured while updating the user\'s role');
         if (raw.n === 0) res.status(404).json('User not found.');
         console.log('User role updated');
         res.status(200).json('User\'s role successfully updated.');
