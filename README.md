@@ -17,12 +17,14 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Note for creating the first user
 When installing the app for the first time, you will probably want to create a first administrator user to access all the features of the application. To do so, follow the steps below:
+
 1. After launching the app, register a new 'normal' user using the *Register* interface.
 2. Launch the MongoDB console (on Windows: *mongo.exe* - not to be confused with *mongod.exe* which is used to launch the Mongo server).
 3. `use equipmentdb`
 4. `db.users.find()` should display the collection containing the user you created in step 1.
 5. `db.users.updateOne({"username": "John"}, {$set: {"role": "Admin"}));`
-Make sure to replace *John* with the actual username you chose, and to write *Admin* with a capital 'A'.
+
+Make sure to replace *John* with the actual username you chose in step 1, and to write *Admin* with a capital 'A'.
 
 You should now be able to log in and access the user management interface which can be used to easily change other users role in the future.
 
