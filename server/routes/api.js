@@ -18,6 +18,8 @@ var ctrlGrid = require('../controllers/grid');
 var ctrlAuth = require('../controllers/authentication');
 var ctrlSupplier = require('../controllers/supplier-management');
 
+const fs = require('fs');
+
 // GET api listing.
 router.get('/', (req, res) => {
     res.send('api works');
@@ -61,7 +63,7 @@ router.get('/leds', (req, res) => {
 //     });
 // });
 
-// Update a led in the database or Create a new one if it doesn't exist
+// Updates a led in the database or Create a new one if it doesn't exist
 router.post('/leds/update', (req, res) => {
     const newValues = req.body;
     if (req.body.wafer_n >= 0) {
@@ -73,7 +75,19 @@ router.post('/leds/update', (req, res) => {
     };
 });
 
-// Remove a led from the database
+// Saves new or updated led data in a log file
+router.post('/leds/logSave', (req, res) => {
+    const dataArray = (req.body);
+    try {
+        if (!fs.existsSync('server/logs/')) fs.mkdirSync('server/logs/');
+        fs.appendFileSync('server/logs/leds.log', dataArray + '\r\n');
+        res.status(200).json();
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+// Removes a led from the database
 router.post('/leds/remove', (req, res) => {
     const number = req.body.wafer_n;        // Save wafer_n to display later
     Led.deleteOne(req.body, function (err, raw) {

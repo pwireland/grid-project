@@ -114,4 +114,21 @@ export class DataService {
       );
   }
 
+  /*********************************************/
+  /*                LOG FILE                   */
+  /*********************************************/
+
+  logSave(obj: Array<string>, callback?: (err, res) => void) {
+    this._http.post('/api/leds/logSave', obj)
+    .subscribe(
+      res => {
+        callback(null, res);
+      },
+      err => {
+        console.log('Error occured during logSave');
+        callback(err, null);
+      }
+    );
+  }
+
 }

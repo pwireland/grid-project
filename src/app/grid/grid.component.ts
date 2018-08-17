@@ -375,7 +375,19 @@ export class GridComponent implements OnInit, PendingChangesGuard {
             if (err) {
               resolve(false);
             } else {
-              resolve(true);
+              // Create a new array with data to store in the log file
+              // data stored: values from the row + username + current date
+              const dataArray: Array<string> = (self.headerArray.map(val => rowNode.data[val.toLowerCase()]));
+              dataArray.push(self.auth.getUserDetails().username);
+              dataArray.push(new Date().toString());
+
+              self._dataService.logSave(dataArray, (err2, res2) => {
+                if (err2) {
+                  resolve(false);
+                } else {
+                  resolve(true);
+                }
+              });
             }
           });
         }
