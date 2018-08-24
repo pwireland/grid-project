@@ -27,6 +27,7 @@ export class GridComponent implements OnInit, PendingChangesGuard {
   private gridColumnApi;
   private cacheBlockSize;
   private maxBlocksInCache;
+  private saveInProgress = false;
 
   private rowData: Array<any>;          // ag-grid - Stores grid data to be displayed
   private suppliers: Array<any>;        // Stores suppliers data fetched from the database
@@ -196,16 +197,18 @@ export class GridComponent implements OnInit, PendingChangesGuard {
    * @param csvFile Reference to the CSV file to read.
    */
   onImport(csvFile: any) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const text = reader.result;
+    if (confirm('Leds with identical wafer number will be overritten')) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const text = reader.result;
 
-      // convert text to json array
-      const json = this.csvJSON(text);
-      this.addRows(json);
-      alert('Rows successfully added');
-    };
-    reader.readAsText(csvFile.target.files[0]);
+        // convert text to json array
+        const json = this.csvJSON(text);
+        this.addRows(json);
+        alert('Rows successfully added');
+      };
+      reader.readAsText(csvFile.target.files[0]);
+    }
   }
 
   csvJSON(csv) {
@@ -267,8 +270,10 @@ export class GridComponent implements OnInit, PendingChangesGuard {
 
     // creating a new item
     for (const row of rowsData) {
+      // LEDS with the same wafer_n are overwritten
       const newItem = {
-        wafer_n: max, led_n: row.led_n, date: row.date, supplier: row.supplier, supplier_pin: row.supplier_pin,
+        wafer_n: row.wafer_n, // replace 'row.wafer_n' by 'max' to add new rows instead of overwriting
+        led_n: row.led_n, date: row.date, supplier: row.supplier, supplier_pin: row.supplier_pin,
         lot_n: row.lot_n, bin_n: row.bin_n, qty_wafer: row.qty_wafer, manufacturing_date: row.manufacturing_date,
         test_current: row.test_current, min: row.min, average: row.average, max: row.max, units: row.units,
         status: row.status
@@ -314,6 +319,7 @@ export class GridComponent implements OnInit, PendingChangesGuard {
       }
       const res = this.gridApi.updateRowData({ remove: selectedData });
     }
+    alert('Rows successfully deleted.');
   }
 
   // The value setter function acts as a validator
@@ -329,20 +335,6 @@ export class GridComponent implements OnInit, PendingChangesGuard {
   }
 
   /**
-   * Parses all grid's lines and return them as a JSON object
-   */
-  parseAllLines() {
-    const allNodes = [];
-    this.gridApi.forEachNode(function (rowNode, index) {
-      allNodes.push(rowNode);
-    });
-    const allData = allNodes.map(node => node.data);
-    const obj = JSON.stringify(allData);
-    console.log(obj);
-    return obj;
-  }
-
-  /**
    * Triggered when a cell is edited. Adds the edited row into the "unsaved rows buffer".
    * @param rowNode Contains the modified row's node.
    */
@@ -355,6 +347,7 @@ export class GridComponent implements OnInit, PendingChangesGuard {
    * Saves every unsaved row into the database, clearing unsaved changes in the process.
    */
   async saveGridData() {
+    this.saveInProgress = true;
     const saveSucess = await this.trySave();
 
     if (saveSucess) {
@@ -363,6 +356,7 @@ export class GridComponent implements OnInit, PendingChangesGuard {
     } else {
       alert('Error: make sure that the database is currently running and try again.');
     }
+    this.saveInProgress = false;
   }
 
   trySave() {
@@ -412,6 +406,20 @@ export class GridComponent implements OnInit, PendingChangesGuard {
   clearUnsavedRows() {
     this.unsavedRow.length = 0;
     document.getElementById('saveButton').setAttribute('disabled', 'disabled');
+  }
+
+  /**
+   * DEBUG - Parses all grid's lines and return them as a JSON object
+   */
+  parseAllLines() {
+    const allNodes = [];
+    this.gridApi.forEachNode(function (rowNode, index) {
+      allNodes.push(rowNode);
+    });
+    const allData = allNodes.map(node => node.data);
+    const obj = JSON.stringify(allData);
+    console.log(obj);
+    return obj;
   }
 
   /**

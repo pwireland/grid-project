@@ -31,6 +31,7 @@
       <button class="button button-orange" (click)="cloneSelected()">Clone selected</button>
       <button class="button button-red" (click)="removeSelected()">Remove selected</button>
       <button class="button" id="saveButton" (click)="saveGridData()" style="float: right;" disabled>SAVE changes</button>
+      <button class="button" *ngIf="saveInProgress" style="float: right; color:black; background-color: white">Save in progress...</button>
       <!-- <button class="button button-red" (click)="clearDatabase()" style="float: right;">CLEAR Database (DEBUG)</button> -->
 
     </div>

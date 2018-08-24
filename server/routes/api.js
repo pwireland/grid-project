@@ -89,10 +89,10 @@ router.post('/leds/logSave', (req, res) => {
 
 // Removes a led from the database
 router.post('/leds/remove', (req, res) => {
-    const number = req.body.wafer_n;        // Save wafer_n to display later
-    Led.deleteOne(req.body, function (err, raw) {
+    const id = req.body.wafer_n;
+    Led.deleteOne({ wafer_n: id}, function (err) {
         if (err) throw (err);
-        console.log('Led ' + number + ' removed!');
+        console.log('Led ' + id + ' removed!');
         res.status(200).json();
     });
 });
